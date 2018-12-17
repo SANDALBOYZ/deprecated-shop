@@ -25,7 +25,7 @@ const Logo = styled.img`
 const headerStyles = css`
   height: ${rhythm(0.8)};
   line-height: ${rhythm(0.8)};
-  margin: ${rhythm(0.8)} ${rhythm(0.5)};
+  margin: ${rhythm(0.8)} ${rhythm(0.7)};
   display: grid;
   grid-template-columns: 1fr 1fr;
 `
@@ -33,9 +33,13 @@ const headerStyles = css`
 const Nav = styled.nav`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 `
 
 const NavItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 15px;
 `
 

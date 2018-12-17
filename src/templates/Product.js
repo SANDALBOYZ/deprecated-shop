@@ -91,6 +91,16 @@ const selectStyles = {
   })
 }
 
+const SizeChart = styled.span`
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  &:after {
+    content: 'Size Chart';
+  }
+`
+
 class Product extends React.Component {
   render () {
     const { pathContext: product } = this.props
@@ -123,7 +133,7 @@ class Product extends React.Component {
           <h2>{product.title}</h2>
           <h6>{product.variants[0].price} USD</h6>
           <p>{product.description}</p>
-          <span>Size Chart</span>
+          <SizeChart />
         </DescriptionContainer>
       </Layout>
     )

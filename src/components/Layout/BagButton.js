@@ -2,7 +2,6 @@
 import React from 'react'
 import { css, keyframes } from '@emotion/core'
 import styled from '@emotion/styled'
-import { get } from 'lodash'
 
 export const bagPop = keyframes`
   0% {
@@ -27,11 +26,11 @@ export const addedToCartStyle = css`
 `
 
 export const BagButtonContainer = styled('button')`
-  font-size: 0.5rem;
+  font-size: 0.4rem;
   color: white;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
   background-color: black;
   border-radius: 50%;
   border: 0;
@@ -58,7 +57,7 @@ const BagButton = (context) => (
     onClick={context.toggleBag}
     className={context.addedToCart ? addedToCartStyle : undefined}
     onAnimationEnd={context.untoggleAddedToCart}
-    data-count={1}
+    data-count={69}
   />
 )
 

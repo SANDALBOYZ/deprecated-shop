@@ -1,11 +1,12 @@
 // @flow
 
 import React from 'react'
-import { css, Global } from '@emotion/core'
-
+import { Global } from '@emotion/core'
 // Components
-import { Link } from 'gatsby'
 import Header from './Header'
+import Footer from './Footer'
+// Styles
+import { globalStyles } from 'styles'
 
 type State = {
   menuIsOpen: boolean
@@ -26,16 +27,13 @@ class Layout extends React.Component<{}, State> {
     return (
       <>
         <Global
-          styles={css`
-            img {
-              margin-bottom: 0 !important;
-            }
-          `}
+          styles={globalStyles}
         />
         <Header menuIsOpen={this.state.menuIsOpen} toggleMenu={this.toggleMenu} />
         <div>
           {children}
         </div>
+        <Footer />
       </>
     )
   }
