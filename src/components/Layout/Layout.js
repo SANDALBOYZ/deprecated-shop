@@ -1,23 +1,38 @@
-import React from 'react'
-import { Link } from 'gatsby'
+// @flow
 
-class Layout extends React.Component {
-  state = {}
+import React from 'react'
+import { css, Global } from '@emotion/core'
+
+// Components
+import { Link } from 'gatsby'
+import Header from './Header'
+
+type State = {
+  menuIsOpen: boolean
+}
+
+class Layout extends React.Component<{}, State> {
+  state = {
+    menuIsOpen: false
+  }
+
+  toggleMenu = () => {
+    this.setState({ menuIsOpen: !this.state.menuIsOpen })
+  }
 
   render () {
     const { children } = this.props
 
     return (
       <>
-        <header>Header</header>
-        <nav>
-          <ul>
-            <Link to='/'>Home</Link>
-            <Link to='/about'>About</Link>
-          </ul>
-        </nav>
-        <div>{this.state.counter}</div>
-        <button onClick={this.onClick}>Click Me!</button>
+        <Global
+          styles={css`
+            img {
+              margin-bottom: 0 !important;
+            }
+          `}
+        />
+        <Header menuIsOpen={this.state.menuIsOpen} toggleMenu={this.toggleMenu} />
         <div>
           {children}
         </div>
