@@ -87,7 +87,9 @@ const Footer = () => (
     </Nav>
     <FooterLogoContainer>
       <FooterLogo src={sandalboyzLogo} />
-      <span>© 2018 SANDALBOYZ</span>
+      <span css={css`
+        font-size: 0.7rem;
+      `}>© 2018 SANDALBOYZ</span>
     </FooterLogoContainer>
   </footer>
 )
