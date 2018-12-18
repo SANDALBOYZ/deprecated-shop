@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Layout } from '../components/Layout'
 
 const PinkDiv = styled.div`
+  margin: 1rem;
   color: pink;
 `
 
@@ -12,7 +13,6 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <div>Hi</div>
       <PinkDiv>Hello, World!</PinkDiv>
     </Layout>
   )
