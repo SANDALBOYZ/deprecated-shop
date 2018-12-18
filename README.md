@@ -16,4 +16,4 @@ This is a MoDeRn WeB aPpLiCaTiOn, built with [Gatsby](https://www.gatsbyjs.org/)
 ## Developing
 
 - `yarn install` to install dependencies.
-- Use `gatsby develop` to start a development server.
+- Use `yarn dev` to start a development server.
