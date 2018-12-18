@@ -1,21 +1,18 @@
 // @flow
-
 import React from 'react'
-// import { css } from '@emotion/core'
+import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
-
 // Components
 import Select from 'react-select'
 import Slider from 'react-slick'
 import Layout from 'components/Layout'
-
 // Styles
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 const StyledSlider = styled(Slider)`
-  margin-bottom: ${rhythm(1.5)};
+  margin-bottom: ${rhythm(1)};
 `
 
 const ProductImage = styled.img`
@@ -101,18 +98,56 @@ const SizeChart = styled.span`
   }
 `
 
+// `react-slick` overrides
+const globalStyles = css`
+  .slick-list {
+    height: 100vw !important;
+    margin-bottom: 5px !important;
+  }
+
+  .slick-dots {
+    display: flex !important;
+    position: inherit !important;
+    bottom: auto !important;
+    flex-wrap: wrap;
+  }
+
+  .slick-dots li {
+    margin: 0 !important;
+    height: calc((100vw - 10px) / 3) !important;
+    width: calc((100vw - 10px) / 3) !important;
+  }
+
+  .slick-dots li:nth-child(even) {
+    margin: 0 5px !important;
+  }
+`
+
 class Product extends React.Component {
+  customPaging = (i) => {
+    const { pathContext: product } = this.props
+
+    return (
+      <img src={product.images[i].originalSrc} alt='' />
+    )
+  }
+
   render () {
     const { pathContext: product } = this.props
 
     return (
       <Layout>
+        <Global
+          styles={globalStyles}
+        />
         <StyledSlider
           dots
+          // appendDots={this.appendDots}
+          customPaging={this.customPaging}
         >
           {
             product.images.map(image => (
-              <ProductImage key={image.originalSrc} src={image.originalSrc} />
+              <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
             ))
           }
         </StyledSlider>
