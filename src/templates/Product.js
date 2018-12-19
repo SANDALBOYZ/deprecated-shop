@@ -75,13 +75,14 @@ const selectStyles = {
     fontSize: '12px',
     textTransform: 'uppercase'
   }),
-  option: (provided, { isDisabled, isFocused }) => ({
+  option: (provided, { isDisabled, isFocused, isSelected }) => ({
     ...provided,
     color: 'black',
     fontSize: '12px',
     padding: `${rhythm(0.2)}`,
     ...isDisabled && { textDecoration: 'line-through' },
-    ...isFocused && { backgroundColor: 'gray' },
+    ...isFocused && { backgroundColor: 'lightgray' },
+    ...isSelected && { backgroundColor: 'gray' },
     '&:active': {
       backgroundColor: 'lightgray'
     }
@@ -142,7 +143,6 @@ class Product extends React.Component {
         />
         <StyledSlider
           dots
-          // appendDots={this.appendDots}
           customPaging={this.customPaging}
         >
           {
