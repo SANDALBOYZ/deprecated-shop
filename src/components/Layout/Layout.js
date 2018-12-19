@@ -30,9 +30,7 @@ class Layout extends React.Component<{}, State> {
           styles={globalStyles}
         />
         <Header menuIsOpen={this.state.menuIsOpen} toggleMenu={this.toggleMenu} />
-        <div>
-          {children}
-        </div>
+        {children}
         <Footer />
       </>
     )

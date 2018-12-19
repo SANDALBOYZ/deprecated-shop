@@ -23,9 +23,14 @@ const Logo = styled.img`
 `
 
 const headerStyles = css`
-  height: ${rhythm(0.8)};
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  background-color: white;
+  height: ${rhythm(2.5)};
+  width: 100%;
   line-height: ${rhythm(0.8)};
-  margin: ${rhythm(0.8)} ${rhythm(0.7)};
+  padding: ${rhythm(0.8)} ${rhythm(0.7)};
   display: grid;
   grid-template-columns: 1fr 1fr;
 `
