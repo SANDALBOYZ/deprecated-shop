@@ -11,6 +11,8 @@ import Hamburger from './Hamburger'
 // Assets
 import sandalboyzTextLogo from 'assets/sandalboyz-text-logo.png'
 
+export const HEADER_HEIGHT = rhythm(2.5)
+
 const StyledLink = styled(Link)`
   background-image: none;
   margin: 0;
@@ -27,7 +29,7 @@ const headerStyles = css`
   position: fixed;
   top: 0;
   background-color: white;
-  height: ${rhythm(2.5)};
+  height: ${HEADER_HEIGHT};
   width: 100%;
   line-height: ${rhythm(0.8)};
   padding: ${rhythm(0.8)} ${rhythm(0.7)};

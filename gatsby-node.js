@@ -31,6 +31,7 @@ exports.createPages = async ({ graphql, actions }) => {
               price
             }
             images {
+              id
               originalSrc
             }
           }

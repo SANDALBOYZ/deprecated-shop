@@ -5,6 +5,7 @@ import { Global } from '@emotion/core'
 // Components
 import Header from './Header'
 import Footer from './Footer'
+import Menu from './Menu'
 // Styles
 import { globalStyles } from 'styles'
 
@@ -30,6 +31,7 @@ class Layout extends React.Component<{}, State> {
           styles={globalStyles}
         />
         <Header menuIsOpen={this.state.menuIsOpen} toggleMenu={this.toggleMenu} />
+        <Menu isOpen={this.state.menuIsOpen} />
         {children}
         <Footer />
       </>
