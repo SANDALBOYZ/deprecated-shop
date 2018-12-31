@@ -43,20 +43,18 @@ export const BagButtonContainer = styled('button')`
   }
 `
 
-// calculateQuantity(get(context.checkout, 'lineItems.edges') || [])
+// const calculateQuantity = (edges: Array<Object>): number => (
+//   edges.reduce((total, edge) => {
+//     total += edge.node.quantity
+//     return total
+//   }, 0)
+// )
 
-const calculateQuantity = (edges: Array<Object>): number => (
-  edges.reduce((total, edge) => {
-    total += edge.node.quantity
-    return total
-  }, 0)
-)
-
-const BagButton = (context) => (
+const BagButton = ({ isOpen, onClick }) => (
   <BagButtonContainer
-    onClick={context.toggleBag}
-    className={context.addedToCart ? addedToCartStyle : undefined}
-    onAnimationEnd={context.untoggleAddedToCart}
+    onClick={onClick}
+    // className={context.addedToCart ? addedToCartStyle : undefined}
+    // onAnimationEnd={context.untoggleAddedToCart}
     data-count={69}
   />
 )

@@ -126,7 +126,7 @@ const globalStyles = css`
 
 class Product extends React.Component {
   customPaging = (i) => {
-    const { pathContext: product } = this.props
+    const { pageContext: product } = this.props
 
     return (
       <img src={product.images[i].originalSrc} alt='' />
@@ -134,7 +134,7 @@ class Product extends React.Component {
   }
 
   render () {
-    const { pathContext: product } = this.props
+    const { pageContext: product } = this.props
 
     return (
       <Layout>

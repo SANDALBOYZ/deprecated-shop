@@ -50,14 +50,20 @@ const NavItem = styled.div`
   margin-left: 15px;
 `
 
-const Header = ({ menuIsOpen, toggleMenu }) => (
+type HeaderProps = {
+  menuIsOpen: boolean,
+  toggleBag: Function,
+  toggleMenu: Function
+}
+
+const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) => (
   <header css={headerStyles}>
     <StyledLink to='/'>
       <Logo src={sandalboyzTextLogo} />
     </StyledLink>
     <Nav>
       <NavItem>
-        <BagButton />
+        <BagButton isOpen={bagIsOpen} onClick={toggleBag} />
       </NavItem>
       <NavItem>
         <Hamburger isOpen={menuIsOpen} onClick={toggleMenu} />

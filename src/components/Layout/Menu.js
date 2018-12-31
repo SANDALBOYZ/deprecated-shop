@@ -11,7 +11,7 @@ const MenuContainer = styled.div`
   display: ${({ isOpen }) => isOpen ? 'block' : 'none'};
   position: fixed;
   top: ${HEADER_HEIGHT};
-  z-index: 1000;
+  z-index: 900;
   background-color: white;
   width: 100%;
   height: calc(100vh - ${HEADER_HEIGHT});
