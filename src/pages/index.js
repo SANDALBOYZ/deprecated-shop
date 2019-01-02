@@ -9,8 +9,6 @@ const PinkDiv = styled.div`
 `
 
 const Index = ({ data }) => {
-  console.log(data)
-
   return (
     <Layout>
       <PinkDiv>Hello, World!</PinkDiv>
