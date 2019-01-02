@@ -26,12 +26,17 @@ class Layout extends React.Component<{}, State> {
   }
 
   toggleMenu = () => {
-    this.setState({ menuIsOpen: !this.state.menuIsOpen })
+    this.setState({
+      menuIsOpen: !this.state.menuIsOpen,
+      bagIsOpen: false
+    })
   }
 
   toggleBag = () => {
-    console.log('asdfasdfasdf')
-    this.setState({ bagIsOpen: !this.state.bagIsOpen })
+    this.setState({
+      bagIsOpen: !this.state.bagIsOpen,
+      menuIsOpen: false
+    })
   }
 
   render () {

@@ -21,6 +21,10 @@ export const BagContent = styled.div`
   overflow-y: scroll;
 `
 
+export const BagHeader = styled.h2`
+  margin-top: 0;
+`
+
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,10 +61,15 @@ export const CheckoutButton = styled.button`
   width: 100vw;
 `
 
-const Bag = ({ isOpen, checkout }) => (
+type BagProps = {
+  isOpen: boolean,
+  checkout: Function
+}
+
+const Bag = ({ isOpen, checkout }: BagProps) => (
   <BagContainer isOpen={isOpen}>
     <BagContent>
-      <h2>Bag</h2>
+      <BagHeader>Bag</BagHeader>
       Spicy jalapeno bacon ipsum dolor amet aliqua spare ribs cupim sirloin, et nostrud ham hock est salami shankle cow fugiat irure. Excepteur dolore in, in fugiat mollit deserunt ham hock ball tip sunt eiusmod spare ribs proident filet mignon pariatur. Fugiat flank ball tip lorem ribeye. Tail flank dolore salami tri-tip turducken eu non et. Cupidatat excepteur flank minim. Bacon pariatur cow spare ribs pork belly ham ball tip. Officia bresaola aliqua short ribs, capicola beef consequat.
 
       Tri-tip drumstick biltong deserunt proident sint. Sint velit labore, pariatur laborum dolor alcatra ea. Labore excepteur ham hock capicola. Meatball ball tip elit, frankfurter capicola shank picanha alcatra ribeye beef. Pariatur pork loin aliquip burgdoggen hamburger ut sunt.
