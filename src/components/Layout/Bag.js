@@ -63,7 +63,7 @@ export const CheckoutButton = styled.button`
 
 type BagProps = {
   isOpen: boolean,
-  checkout: Function
+  checkout: Object
 }
 
 const Bag = ({ isOpen, checkout }: BagProps) => (

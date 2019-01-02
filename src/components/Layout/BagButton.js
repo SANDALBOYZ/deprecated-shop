@@ -50,7 +50,12 @@ export const BagButtonContainer = styled('button')`
 //   }, 0)
 // )
 
-const BagButton = ({ isOpen, onClick }) => (
+type BagButtonProps = {
+  isOpen: boolean,
+  onClick: Function
+}
+
+const BagButton = ({ isOpen, onClick }: BagButtonProps) => (
   <BagButtonContainer
     onClick={onClick}
     // className={context.addedToCart ? addedToCartStyle : undefined}
