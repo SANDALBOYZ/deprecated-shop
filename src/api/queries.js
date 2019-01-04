@@ -28,9 +28,11 @@ export const CHECKOUT_FRAGMENT = gql`
 `
 
 export const CREATE_CHECKOUT = gql`
-  mutation checkoutCreate ($input: CheckoutCreateInput!){
+  ${CHECKOUT_FRAGMENT}
+
+  mutation checkoutCreate($input: CheckoutCreateInput!) {
     checkoutCreate(input: $input) {
-      userErrors {
+      checkoutUserErrors {
         message
         field
       }
@@ -39,5 +41,15 @@ export const CREATE_CHECKOUT = gql`
       }
     }
   }
+`
+
+export const GET_CHECKOUT = gql`
   ${CHECKOUT_FRAGMENT}
+
+  query getCheckout($id: ID!) {
+    node(id: $id) {
+      __typename
+      ...CheckoutFragment
+    }
+  }
 `
