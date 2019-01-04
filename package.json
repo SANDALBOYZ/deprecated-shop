@@ -9,7 +9,8 @@
     "format": "prettier --write 'src/**/*.js'",
     "lint": "standard --verbose | snazzy",
     "lint:fix": "standard --fix | snazzy",
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
