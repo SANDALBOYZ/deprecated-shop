@@ -1,52 +1,9 @@
 // @flow
 import React from 'react'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
 import styled from '@emotion/styled'
 import { HEADER_HEIGHT } from './Header'
 import { rhythm } from 'utils/typography'
-
-const CHECKOUT_FRAGMENT = gql`
-  fragment CheckoutFragment on Checkout {
-    id
-    webUrl
-    totalTax
-    subtotalPrice
-    totalPrice
-    lineItems (first: 250) {
-      edges {
-        node {
-          id
-          title
-          variant {
-            id
-            title
-            image {
-              src
-            }
-            price
-          }
-          quantity
-        }
-      }
-    }
-  }
-`
-
-const CREATE_CHECKOUT = gql`
-  mutation checkoutCreate ($input: CheckoutCreateInput!){
-    checkoutCreate(input: $input) {
-      userErrors {
-        message
-        field
-      }
-      checkout {
-        ...CheckoutFragment
-      }
-    }
-  }
-  ${CHECKOUT_FRAGMENT}
-`
 
 export const BagContainer = styled.div`
   display: ${({ isOpen }) => isOpen ? 'grid' : 'none'};
@@ -230,21 +187,23 @@ const Bag = ({ isOpen, checkout }: BagProps) => (
   </BagContainer>
 )
 
-export default (props) => (
-  <Mutation
-    mutation={CREATE_CHECKOUT}
-    onCompleted={({ checkoutCreate: { checkout: { id } } }) => window.localStorage.setItem('sandalboyzCheckoutId', id)}
-  >
-    {
-      (createCheckout, { data }) => {
-        if (!window.localStorage.getItem('sandalboyzCheckoutId')) {
-          createCheckout({ variables: { input: {} } })
-        }
+export default Bag
 
-        return (
-          <Bag createCheckout={createCheckout} data={data} {...props} />
-        )
-      }
-    }
-  </Mutation>
-)
+// export default (props) => (
+//   <Mutation
+//     mutation={CREATE_CHECKOUT}
+//     onCompleted={({ checkoutCreate: { checkout: { id } } }) => window.localStorage.setItem('sandalboyzCheckoutId', id)}
+//   >
+//     {
+//       (createCheckout, { data }) => {
+//         if (!window.localStorage.getItem('sandalboyzCheckoutId')) {
+//           createCheckout({ variables: { input: {} } })
+//         }
+//
+//         return (
+//           <Bag createCheckout={createCheckout} data={data} {...props} />
+//         )
+//       }
+//     }
+//   </Mutation>
+// )
