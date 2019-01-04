@@ -54,7 +54,12 @@ export const Patties = styled('div')`
 `
 /* eslint-enable */
 
-const Hamburger = ({ isOpen, onClick }) => (
+type HamburgerProps = {
+  isOpen: boolean,
+  onClick: Function
+}
+
+const Hamburger = ({ isOpen, onClick }: HamburgerProps) => (
   <Buns onClick={onClick}>
     <Patties isOpen={isOpen} />
   </Buns>
