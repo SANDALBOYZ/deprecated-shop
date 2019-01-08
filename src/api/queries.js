@@ -4,9 +4,10 @@ export const CHECKOUT_FRAGMENT = gql`
   fragment CheckoutFragment on Checkout {
     id
     webUrl
-    totalTax
     subtotalPrice
+    totalTax
     totalPrice
+    currencyCode
     lineItems (first: 250) {
       edges {
         node {
@@ -16,7 +17,7 @@ export const CHECKOUT_FRAGMENT = gql`
             id
             title
             image {
-              src
+              transformedSrc(maxHeight: 400, maxWidth: 400)
             }
             price
           }
@@ -43,10 +44,10 @@ export const CREATE_CHECKOUT = gql`
   }
 `
 
-export const GET_CHECKOUT = gql`
+export const GET_CHECKOUT_NODE = gql`
   ${CHECKOUT_FRAGMENT}
 
-  query getCheckout($id: ID!) {
+  query getCheckoutNode($id: ID!) {
     node(id: $id) {
       __typename
       ...CheckoutFragment

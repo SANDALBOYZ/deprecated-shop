@@ -5,21 +5,19 @@
  */
 
 import React from 'react'
-import { ApolloProvider, Mutation } from 'react-apollo'
+import { ApolloProvider } from 'react-apollo'
 import { Global } from '@emotion/core'
 import styled from '@emotion/styled'
 // API
 import client from 'api/client'
-import { CREATE_CHECKOUT } from 'api/queries'
 // Components
+import CheckoutSetup from './CheckoutSetup'
 import Header, { HEADER_HEIGHT } from './Header'
 import Footer from './Footer'
 import Menu from './Menu'
 import Bag from './Bag'
 // Styles
 import { globalStyles } from 'styles'
-
-const { localStorage } = window
 
 export const Content = styled.div`
   margin-top: ${HEADER_HEIGHT};
@@ -58,23 +56,7 @@ class Layout extends React.Component<{}, State> {
         <Global
           styles={globalStyles}
         />
-        <Mutation
-          mutation={CREATE_CHECKOUT}
-          onCompleted={({ checkoutCreate: { checkout: { id } } }) =>
-            localStorage.setItem('sandalboyzCheckoutId', id)
-          }
-        >
-          {
-            // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one. The result is stored using `onCompleted` (above).
-            (createCheckout) => {
-              if (!localStorage.getItem('sandalboyzCheckoutId')) {
-                createCheckout({ variables: { input: {} } })
-              }
-
-              return null
-            }
-          }
-        </Mutation>
+        <CheckoutSetup />
         <Header
           menuIsOpen={this.state.menuIsOpen}
           toggleMenu={this.toggleMenu}
