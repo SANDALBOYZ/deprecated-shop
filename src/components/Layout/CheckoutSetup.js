@@ -8,6 +8,10 @@ const { localStorage } = window
 /**
  * This will create a checkout remotely and save the ID of it in `localStorage`.
  * We then make a GraphQL query for that saved ID so that Apollo can cache it.
+ *
+ * 1. `createCheckout` must be created with a mutation.
+ * 2. All of the checkout information can be gathered from the `GET_CHECKOUT_NODE` endpoint.
+ *    Subsequent modifications to the cart will be made on the `checkoutId` in `localStorage`.
  */
 const CheckoutSetup = () => (
   <>
