@@ -67,13 +67,13 @@ const Footer = () => (
       </NavList>
       <NavList>
         <NavListItem>
-          <NavListLink>ABOUT</NavListLink>
+          <NavListLink href='/about'>ABOUT</NavListLink>
         </NavListItem>
         <NavListItem>
           <NavListLink>STOCKISTS</NavListLink>
         </NavListItem>
         <NavListItem>
-          <NavListLink>HELP</NavListLink>
+          <NavListLink href='/help'>HELP</NavListLink>
         </NavListItem>
       </NavList>
       <NavList>
