@@ -2,7 +2,7 @@
 import ApolloClient from 'apollo-boost'
 
 const client = new ApolloClient({
-  uri: 'https://sandalboyz-2.myshopify.com/api/graphql',
+  uri: process.env.SHOPIFY_GRAPHQL_URI,
   headers: {
     'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN
   }
