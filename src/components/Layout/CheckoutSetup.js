@@ -1,3 +1,4 @@
+// This is a NON-PRESENTATIONAL component. It uses Apollo to set up necessary API stuff.
 import React from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { CREATE_CHECKOUT, GET_CHECKOUT_NODE } from 'api/queries'
@@ -20,7 +21,8 @@ const CheckoutSetup = () => (
       }}
     >
       {
-        // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one. The result is stored using `onCompleted` (above).
+        // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one.
+        // The result is stored using `onCompleted` (above).
         (createCheckout) => {
           if (!localStorage.getItem('sandalboyzCheckoutId')) {
             createCheckout({ variables: { input: {} } })

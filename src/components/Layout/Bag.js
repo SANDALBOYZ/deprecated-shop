@@ -97,8 +97,12 @@ const Bag = ({ isOpen, node }: Props) => {
             Cancel
           </ButtonText>
         </CancelButton>
-        <CheckoutButton>
-          <ButtonText>Checkout</ButtonText>
+        <CheckoutButton onClick={() => {
+          if (node.webUrl) window.location.href = node.webUrl
+        }}>
+          <ButtonText>
+            Checkout
+          </ButtonText>
           <span>{totalPrice}</span>
         </CheckoutButton>
       </ButtonContainer>
