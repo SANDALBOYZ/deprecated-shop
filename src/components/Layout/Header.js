@@ -7,9 +7,11 @@ import { rhythm } from 'utils/typography'
 // Components
 import { Link } from 'gatsby'
 import BagButton from './BagButton'
-import Hamburger from './Hamburger'
+import MenuButton from './MenuButton'
 // Assets
 import sandalboyzTextLogo from 'assets/sandalboyz-text-logo.png'
+
+// const { localStorage } = window
 
 export const HEADER_HEIGHT = rhythm(2.5)
 
@@ -66,7 +68,7 @@ const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) =
         <BagButton isOpen={bagIsOpen} onClick={toggleBag} />
       </NavItem>
       <NavItem>
-        <Hamburger isOpen={menuIsOpen} onClick={toggleMenu} />
+        <MenuButton isOpen={menuIsOpen} onClick={toggleMenu} />
       </NavItem>
     </Nav>
   </header>

@@ -1,8 +1,17 @@
 // @flow
+
+/**
+ * This is pretty much the entry point for the application.
+ */
+
 import React from 'react'
+import { ApolloProvider } from 'react-apollo'
 import { Global } from '@emotion/core'
 import styled from '@emotion/styled'
+// API
+import client from 'api/client'
 // Components
+import CheckoutSetup from './CheckoutSetup'
 import Header, { HEADER_HEIGHT } from './Header'
 import Footer from './Footer'
 import Menu from './Menu'
@@ -43,10 +52,11 @@ class Layout extends React.Component<{}, State> {
     const { children } = this.props
 
     return (
-      <>
+      <ApolloProvider client={client}>
         <Global
           styles={globalStyles}
         />
+        <CheckoutSetup />
         <Header
           menuIsOpen={this.state.menuIsOpen}
           toggleMenu={this.toggleMenu}
@@ -59,7 +69,7 @@ class Layout extends React.Component<{}, State> {
           {children}
         </Content>
         <Footer />
-      </>
+      </ApolloProvider>
     )
   }
 }

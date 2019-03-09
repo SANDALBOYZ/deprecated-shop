@@ -3,7 +3,7 @@
 import React from 'react'
 import ReactSelect from 'react-select'
 
-const Select = ({ options, onChange, value  }) => (
+const Select = ({ options, onChange, value }) => (
   <Select
     options={options}
     classNamePrefix='react-select'
