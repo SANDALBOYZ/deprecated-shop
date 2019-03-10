@@ -2,12 +2,28 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Layout } from 'components/Layout'
+import ProductTile from 'components/ProductTile'
 
-const Products = (props) => {
-  console.log(props)
+const Products = ({ data: { allShopifyProduct: { edges } } }) => {
+  console.log(edges)
 
   return (
-    <Layout><div /></Layout>
+    <Layout>
+      <div>
+        {
+          edges.map(({ node }) => (
+            <ProductTile
+              key={node.handle}
+              handle={node.handle}
+              title={node.title}
+              price={node.priceRange.minVariantPrice.amount}
+              currency={node.priceRange.minVariantPrice.currencyCode}
+              imageSrc={node.images[0].originalSrc}
+            />
+          ))
+        }
+      </div>
+    </Layout>
   )
 }
 
