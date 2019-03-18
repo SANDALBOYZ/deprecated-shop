@@ -42,7 +42,7 @@ const Menu = ({ isOpen }: Props) => (
     <SearchBar />
     <MenuNav>
       <MenuNavItem>
-        <Link to='/'>Shop</Link>
+        <Link to='/products'>Shop</Link>
       </MenuNavItem>
       <MenuNavItem>
         <Link to='/about'>About</Link>

@@ -10,17 +10,24 @@ type ProductTileProps = {
   image: string
 }
 
+const Container = styled.div`
+`
+
 const Image = styled.img`
   width: 100%;
 `
 
+const Description = styled.a``
+
 const ProductTile = ({ handle, title, price, currency, imageSrc }: ProductTileProps) => (
-  <div>
-    <Image src={imageSrc} />
-    <div>
+  <Container>
+    <a href={`/products/${handle}`}>
+      <Image src={imageSrc} />
+    </a>
+    <Description href={`/products/${handle}`}>
       {title} - {price} {currency}
-    </div>
-  </div>
+    </Description>
+  </Container>
 )
 
 export default ProductTile
