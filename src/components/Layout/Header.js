@@ -1,17 +1,16 @@
 // @flow
 
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { rhythm } from 'utils/typography'
+import { StateContext } from 'components/StateProvider'
 // Components
 import { Link } from 'gatsby'
 import BagButton from './BagButton'
 import MenuButton from './MenuButton'
 // Assets
 import sandalboyzTextLogo from 'assets/sandalboyz-text-logo.png'
-
-// const { localStorage } = window
 
 export const HEADER_HEIGHT = rhythm(2.5)
 
@@ -58,20 +57,27 @@ type HeaderProps = {
   toggleMenu: Function
 }
 
-const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) => (
-  <header css={headerStyles}>
-    <StyledLink to='/'>
-      <Logo src={sandalboyzTextLogo} />
-    </StyledLink>
-    <Nav>
-      <NavItem>
-        <BagButton isOpen={bagIsOpen} onClick={toggleBag} />
-      </NavItem>
-      <NavItem>
-        <MenuButton isOpen={menuIsOpen} onClick={toggleMenu} />
-      </NavItem>
-    </Nav>
-  </header>
-)
+const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) => {
+  const [state, dispatch] = useContext(StateContext)
+
+  return (
+    <header css={headerStyles}>
+      <StyledLink to='/'>
+        <Logo src={sandalboyzTextLogo} />
+      </StyledLink>
+      <Nav>
+        <NavItem>
+          <BagButton
+            isOpen={state.bagIsOpen}
+            onClick={() => dispatch({ type: 'toggleBag' })}
+          />
+        </NavItem>
+        <NavItem>
+          <MenuButton isOpen={menuIsOpen} onClick={toggleMenu} />
+        </NavItem>
+      </Nav>
+    </header>
+  )
+}
 
 export default Header

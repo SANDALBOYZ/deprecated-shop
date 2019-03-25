@@ -54,3 +54,16 @@ export const GET_CHECKOUT_NODE = gql`
     }
   }
 `
+
+export const CHECKOUT_LINE_ITEMS_REPLACE = gql`
+  mutation checkoutLineItemsReplace($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
+    userErrors {
+      code
+      field
+      message
+    }
+    checkout {
+      id
+    }
+  }
+`

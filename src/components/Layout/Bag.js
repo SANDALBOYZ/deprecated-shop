@@ -1,5 +1,6 @@
 // @flow
-import React from 'react'
+import React, { useContext } from 'react'
+import { StateContext } from 'components/StateProvider'
 import { Query } from 'react-apollo'
 import { GET_CHECKOUT_NODE } from 'api/queries'
 import styled from '@emotion/styled'
@@ -74,11 +75,13 @@ type QueryProps = {
 type Props = PassedProps & QueryProps
 
 const Bag = ({ isOpen, node }: Props) => {
+  const [state] = useContext(StateContext)
+
   console.log('`Bag`', node)
   const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
 
   return (
-    <BagContainer isOpen={isOpen}>
+    <BagContainer isOpen={state.bagIsOpen}>
       <BagContent>
         <BagHeader>Bag</BagHeader>
         Spicy jalapeno bacon ipsum dolor amet aliqua spare ribs cupim sirloin, et nostrud ham hock est salami shankle cow fugiat irure. Excepteur dolore in, in fugiat mollit deserunt ham hock ball tip sunt eiusmod spare ribs proident filet mignon pariatur. Fugiat flank ball tip lorem ribeye. Tail flank dolore salami tri-tip turducken eu non et. Cupidatat excepteur flank minim. Bacon pariatur cow spare ribs pork belly ham ball tip. Officia bresaola aliqua short ribs, capicola beef consequat.

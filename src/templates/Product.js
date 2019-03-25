@@ -4,6 +4,7 @@ import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
 // Components
+import { Mutation } from 'react-apollo'
 import Select from 'react-select'
 import Slider from 'react-slick'
 import Layout from 'components/Layout'
