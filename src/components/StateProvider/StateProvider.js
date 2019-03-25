@@ -1,4 +1,9 @@
 // @flow
+
+/**
+ * Application state management.
+ */
+
 import React, { createContext, useReducer } from 'react'
 
 type State = {
