@@ -1,9 +1,9 @@
 // @flow
 import get from 'lodash/get'
+
 type BagProduct = {
   quantity: number
 }
-
 export type BagState = {
   [productId: string]: BagProduct
 }
