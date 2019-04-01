@@ -1,8 +1,9 @@
+// @flow
 type BagProduct = {
   quantity: number
 }
 
-type State = {
+export type BagState = {
   [productId: string]: BagProduct
 }
 
@@ -10,33 +11,49 @@ export const BAG_ADD = '@bag/ADD'
 export const BAG_SUBTRACT = '@bag/subtract'
 export const BAG_REMOVE = '@bag/REMOVE'
 
-export const bagReducer = (state: State, action): State => {
-  switch (action.type) {
+export const bagReducer = (state: BagState, action): BagState => {
+  const { type, payload } = action
+  console.log('`bagReducer` with `payload`', payload)
+  const id: string = payload.selectedOption.value
+
+  switch (type) {
     case BAG_ADD:
-      return {
-        ...state,
-        [action.payload.productId]: {
-          ...state[action.payload.productId],
-          quantity: state[action.payload.productId] + 1
+      if (state[id]) {
+        return {
+          ...state,
+          [id]: {
+            ...state[id],
+            quantity: state[id] + 1
+          }
+        }
+      } else {
+        return {
+          ...state,
+          [id]: {
+            quantity: 1,
+            metadata: { ...payload.product, selectedOption: payload.selectedOption }
+          }
         }
       }
     case BAG_SUBTRACT:
-      if (state[action.payload.productId].quantity === 1) {
-        const { [action.payload.productId]: _, ...without } = state
+      if (state[id].quantity === 1) {
+        const { [id]: _, ...without } = state
         return without
       } else {
         return {
           ...state,
-          [action.payload.productId]: {
-            ...state[action.payload.productId],
-            quantity: state[action.payload.productId] - 1
+          [id]: {
+            ...state[id],
+            quantity: state[id] - 1
           }
         }
       }
     case BAG_REMOVE:
-      const { [action.payload.productId]: _, ...without } = state
+      const { [id]: _, ...without } = state
       return without
     default:
       return state
   }
 }
+
+export default bagReducer

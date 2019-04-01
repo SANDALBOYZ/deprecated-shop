@@ -3,9 +3,7 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { rhythm } from 'utils/typography'
-import { StateContext } from 'components/StateProvider'
-// State
-import { TOGGLE_BAG, TOGGLE_MENU } from 'components/StateProvider/actions'
+import { StateContext, TOGGLE_BAG, TOGGLE_MENU } from 'components/StateProvider'
 // Components
 import { Link } from 'gatsby'
 import BagButton from './BagButton'

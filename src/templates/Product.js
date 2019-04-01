@@ -1,10 +1,10 @@
 // @flow
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
+import { StateContext, BAG_ADD } from 'components/StateProvider'
 // Components
-import { Mutation } from 'react-apollo'
 import Select from 'react-select'
 import Slider from 'react-slick'
 import Layout from 'components/Layout'
@@ -125,10 +125,11 @@ const globalStyles = css`
   }
 `
 
-const Product = ({ pageContext: product }) => {
+const Product = ({ product }) => {
+  console.log('`pageContext` on `Product.js`', product)
+  const [state, dispatch] = useContext(StateContext)
+  console.log(state)
   const [selectedOption, setSelectedOption] = useState()
-
-  console.log('`Product`', product)
 
   const customPaging = (i) => {
     return (
@@ -137,7 +138,7 @@ const Product = ({ pageContext: product }) => {
   }
 
   return (
-    <Layout>
+    <>
       <Global
         styles={globalStyles}
       />
@@ -164,7 +165,12 @@ const Product = ({ pageContext: product }) => {
           placeholder='Select'
           onChange={option => setSelectedOption(option)}
         />
-        <AddToBagButton>Add To Bag</AddToBagButton>
+        <AddToBagButton
+          disabled={!selectedOption}
+          onClick={() => dispatch({ type: BAG_ADD, payload: { product, selectedOption } })}
+        >
+          Add To Bag
+        </AddToBagButton>
       </AddToBagContainer>
       <DescriptionContainer>
         <h2>{product.title}</h2>
@@ -172,8 +178,14 @@ const Product = ({ pageContext: product }) => {
         <p>{product.description}</p>
         <SizeChart />
       </DescriptionContainer>
-    </Layout>
+    </>
   )
 }
 
-export default Product
+const Wrapper = ({ pageContext }) => (
+  <Layout>
+    <Product product={pageContext} />
+  </Layout>
+)
+
+export default Wrapper
