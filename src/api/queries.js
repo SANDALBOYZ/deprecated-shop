@@ -56,6 +56,8 @@ export const GET_CHECKOUT_NODE = gql`
 `
 
 export const CHECKOUT_LINE_ITEMS_REPLACE = gql`
+  ${CHECKOUT_FRAGMENT}
+
   mutation checkoutLineItemsReplace($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
     userErrors {
       code
@@ -63,7 +65,7 @@ export const CHECKOUT_LINE_ITEMS_REPLACE = gql`
       message
     }
     checkout {
-      id
+      ...CheckoutFragment
     }
   }
 `

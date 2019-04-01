@@ -61,17 +61,10 @@ class Layout extends React.Component<{}, State> {
             styles={globalStyles}
           />
           <CheckoutSetup />
-          <Header
-            menuIsOpen={this.state.menuIsOpen}
-            toggleMenu={this.toggleMenu}
-            bagIsOpen={this.state.bagIsOpen}
-            toggleBag={this.toggleBag}
-          />
-          <Menu isOpen={this.state.menuIsOpen} />
+          <Header />
+          <Menu />
           <Bag />
-          <Content>
-            {children}
-          </Content>
+          <Content>{children}</Content>
           <Footer />
         </ApolloProvider>
       </StateProvider>

@@ -128,6 +128,8 @@ const globalStyles = css`
 const Product = ({ pageContext: product }) => {
   const [selectedOption, setSelectedOption] = useState()
 
+  console.log('`Product`', product)
+
   const customPaging = (i) => {
     return (
       <img src={product.images[i].originalSrc} alt='' />

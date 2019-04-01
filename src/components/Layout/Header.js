@@ -1,10 +1,11 @@
 // @flow
-
 import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { rhythm } from 'utils/typography'
 import { StateContext } from 'components/StateProvider'
+// State
+import { TOGGLE_BAG, TOGGLE_MENU } from 'components/StateProvider/actions'
 // Components
 import { Link } from 'gatsby'
 import BagButton from './BagButton'
@@ -51,14 +52,9 @@ const NavItem = styled.div`
   margin-left: 15px;
 `
 
-type HeaderProps = {
-  menuIsOpen: boolean,
-  toggleBag: Function,
-  toggleMenu: Function
-}
-
-const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) => {
+const Header = () => {
   const [state, dispatch] = useContext(StateContext)
+  const { bagIsOpen, menuIsOpen } = state
 
   return (
     <header css={headerStyles}>
@@ -68,12 +64,15 @@ const Header = ({ menuIsOpen, bagIsOpen, toggleBag, toggleMenu }: HeaderProps) =
       <Nav>
         <NavItem>
           <BagButton
-            isOpen={state.bagIsOpen}
-            onClick={() => dispatch({ type: 'toggleBag' })}
+            isOpen={bagIsOpen}
+            onClick={() => dispatch({ type: TOGGLE_BAG })}
           />
         </NavItem>
         <NavItem>
-          <MenuButton isOpen={menuIsOpen} onClick={toggleMenu} />
+          <MenuButton
+            isOpen={menuIsOpen}
+            onClick={() => dispatch({ type: TOGGLE_MENU })}
+          />
         </NavItem>
       </Nav>
     </header>

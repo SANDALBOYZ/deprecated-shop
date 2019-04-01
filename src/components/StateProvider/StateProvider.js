@@ -5,6 +5,8 @@
  */
 
 import React, { createContext, useReducer } from 'react'
+import { bagReducer } from './bagReducer'
+import { TOGGLE_BAG, TOGGLE_MENU } from './actions'
 
 type State = {
   bagIsOpen: boolean,
@@ -13,14 +15,14 @@ type State = {
 
 export const StateContext = createContext()
 
-const reducer = (state: State, action): State => {
+const rootReducer = (state: State, action): State => {
   switch (action.type) {
-    case 'toggleBag':
+    case TOGGLE_BAG:
       return {
         ...state,
         bagIsOpen: !state.bagIsOpen
       }
-    case 'toggleMenu':
+    case TOGGLE_MENU:
       return {
         ...state,
         menuIsOpen: !state.menuIsOpen
@@ -29,6 +31,11 @@ const reducer = (state: State, action): State => {
       return state
   }
 }
+
+const reducer = (state: State, action): State => ({
+  ...rootReducer(state, action),
+  bag: bagReducer(state, action)
+})
 
 const initialState: State = {
   bagIsOpen: false,
