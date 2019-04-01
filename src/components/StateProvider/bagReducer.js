@@ -1,4 +1,5 @@
 // @flow
+import get from 'lodash/get'
 type BagProduct = {
   quantity: number
 }
@@ -11,31 +12,35 @@ export const BAG_ADD = '@bag/ADD'
 export const BAG_SUBTRACT = '@bag/subtract'
 export const BAG_REMOVE = '@bag/REMOVE'
 
-export const bagReducer = (state: BagState, action): BagState => {
-  const { type, payload } = action
-  console.log('`bagReducer` with `payload`', payload)
-  const id: string = payload.selectedOption.value
+const initialState: BagState = {}
 
-  switch (type) {
-    case BAG_ADD:
+export const bagReducer = (state: BagState = initialState, action): BagState => {
+  switch (get(action, 'type')) {
+    case BAG_ADD: {
+      const id = get(action, 'payload.selectedOption.value')
+
       if (state[id]) {
         return {
           ...state,
           [id]: {
             ...state[id],
-            quantity: state[id] + 1
+            quantity: state[id].quantity + 1
           }
         }
       } else {
+        const { product, selectedOption } = action.payload
         return {
           ...state,
           [id]: {
             quantity: 1,
-            metadata: { ...payload.product, selectedOption: payload.selectedOption }
+            metadata: { ...product, selectedOption }
           }
         }
       }
-    case BAG_SUBTRACT:
+    }
+    case BAG_SUBTRACT: {
+      const id = action.payload.id
+
       if (state[id].quantity === 1) {
         const { [id]: _, ...without } = state
         return without
@@ -44,13 +49,17 @@ export const bagReducer = (state: BagState, action): BagState => {
           ...state,
           [id]: {
             ...state[id],
-            quantity: state[id] - 1
+            quantity: state[id].quantity - 1
           }
         }
       }
-    case BAG_REMOVE:
+    }
+    case BAG_REMOVE: {
+      const id = action.payload.id
+
       const { [id]: _, ...without } = state
       return without
+    }
     default:
       return state
   }

@@ -4,6 +4,7 @@
 module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
+  verbose: true,
   transform: {
     '^.+\\.jsx?$': '<rootDir>/jest-preprocess.js'
   },
