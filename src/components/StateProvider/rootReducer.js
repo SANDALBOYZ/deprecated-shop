@@ -12,11 +12,13 @@ export const rootReducer = (state: RootState, action): RootState => {
     case TOGGLE_BAG:
       return {
         ...state,
+        menuIsOpen: false,
         bagIsOpen: !state.bagIsOpen
       }
     case TOGGLE_MENU:
       return {
         ...state,
+        bagIsOpen: false,
         menuIsOpen: !state.menuIsOpen
       }
     default:

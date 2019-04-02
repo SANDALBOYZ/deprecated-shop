@@ -73,7 +73,7 @@ type Props = {
 
 const Bag = ({ node }: Props) => {
   const [state] = useContext(StateContext)
-  const { bagIsOpen } = state
+  const { bagIsOpen, bag } = state
 
   console.log('`Bag`', node)
   const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
@@ -82,15 +82,15 @@ const Bag = ({ node }: Props) => {
     <BagContainer isOpen={bagIsOpen}>
       <BagContent>
         <BagHeader>Bag</BagHeader>
-        Spicy jalapeno bacon ipsum dolor amet aliqua spare ribs cupim sirloin, et nostrud ham hock est salami shankle cow fugiat irure. Excepteur dolore in, in fugiat mollit deserunt ham hock ball tip sunt eiusmod spare ribs proident filet mignon pariatur. Fugiat flank ball tip lorem ribeye. Tail flank dolore salami tri-tip turducken eu non et. Cupidatat excepteur flank minim. Bacon pariatur cow spare ribs pork belly ham ball tip. Officia bresaola aliqua short ribs, capicola beef consequat.
-
-        Tri-tip drumstick biltong deserunt proident sint. Sint velit labore, pariatur laborum dolor alcatra ea. Labore excepteur ham hock capicola. Meatball ball tip elit, frankfurter capicola shank picanha alcatra ribeye beef. Pariatur pork loin aliquip burgdoggen hamburger ut sunt.
-
-        Aute culpa dolore, ad doner tail quis sirloin kevin dolor minim. Excepteur tenderloin corned beef meatball, laborum eu cow anim jowl short ribs venison labore non id exercitation. Rump doner magna pork chop, adipisicing fatback pork loin. Ullamco reprehenderit ad cupim shoulder spare ribs do pastrami eu.
-
-        Nulla sunt bresaola ut filet mignon ground round consequat nostrud eiusmod ut. Aliqua pancetta capicola, fatback commodo picanha frankfurter elit boudin pig. Fatback tenderloin shoulder bresaola pig jerky lorem. Dolore reprehenderit beef swine. Shoulder laborum ut frankfurter anim aute tongue jowl chicken esse. Ut biltong cow ea, ball tip cillum porchetta consequat pork loin lorem minim est. Quis minim tenderloin, aute doner ut consectetur flank ground round.
-
-        Turducken irure porchetta aliquip duis. Do t-bone hamburger burgdoggen jowl aliquip, meatball biltong pariatur flank irure capicola meatloaf in. In bresaola meatloaf, bacon doner voluptate pork chop corned beef porchetta sirloin filet mignon ut ea tempor. Non mollit exercitation, qui ullamco spare ribs sint laborum tenderloin irure burgdoggen veniam porchetta rump swine. Spare ribs cupim proident swine, shankle ut mollit minim pancetta laboris picanha sed id fatback meatloaf. Ex aliquip tempor quis, boudin prosciutto porchetta salami fatback venison kielbasa bacon. Meatball boudin ground round, nulla bresaola in frankfurter short ribs pancetta salami ut pork loin bacon adipisicing brisket.
+        {
+          Object.keys(bag).map((key) => (
+            <div key={key}>
+              <p>{bag[key].metadata.title}</p>
+              <p>Size {bag[key].metadata.selectedOption.label}</p>
+              <p>{bag[key].quantity}</p>
+            </div>
+          ))
+        }
       </BagContent>
       <ButtonContainer>
         <CancelButton>
