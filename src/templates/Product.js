@@ -4,7 +4,12 @@ import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
 import { StateContext, BAG_ADD } from 'components/StateProvider'
+// Types
+import type BagState from 'components/StateProvider'
+// API
+import { CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 // Components
+import { Mutation } from 'react-apollo'
 import Select from 'react-select'
 import Slider from 'react-slick'
 import Layout from 'components/Layout'
@@ -125,6 +130,20 @@ const globalStyles = css`
   }
 `
 
+const { localStorage } = window
+
+type LineItem = {
+  quantity: number,
+  variantId: string
+}
+
+const serializeBagToLineItems = (bag: BagState): [LineItem] => (
+  Object.keys(bag).map((itemId: string) => ({
+    quantity: bag[itemId].quantity,
+    variantId: itemId.replace('Shopify__ProductVariant__', '')
+  }))
+)
+
 const Product = ({ product }) => {
   console.log('`pageContext` on `Product.js`', product)
   const [state, dispatch] = useContext(StateContext)
@@ -138,47 +157,55 @@ const Product = ({ product }) => {
   }
 
   return (
-    <>
-      <Global
-        styles={globalStyles}
-      />
-      <StyledSlider
-        dots
-        customPaging={customPaging}
-      >
-        {
-          product.images.map(image => (
-            <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
-          ))
-        }
-      </StyledSlider>
-      <AddToBagContainer>
-        <Select
-          value={selectedOption}
-          options={product.variants.map(variant => ({
-            value: variant.id,
-            label: variant.title,
-            isDisabled: !variant.availableForSale
-          }))}
-          isSearchable={false}
-          styles={selectStyles}
-          placeholder='Select'
-          onChange={option => setSelectedOption(option)}
-        />
-        <AddToBagButton
-          disabled={!selectedOption}
-          onClick={() => dispatch({ type: BAG_ADD, payload: { product, selectedOption } })}
-        >
-          Add To Bag
-        </AddToBagButton>
-      </AddToBagContainer>
-      <DescriptionContainer>
-        <h2>{product.title}</h2>
-        <h6>{product.variants[0].price} USD</h6>
-        <p>{product.description}</p>
-        <SizeChart />
-      </DescriptionContainer>
-    </>
+    <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
+      {(checkoutLineItemsReplace, { loading, error, data }) => {
+        console.log('Inside `Product.js` `<Mutation />`', data)
+
+        return (
+          <>
+            <Global
+              styles={globalStyles}
+            />
+            <StyledSlider
+              dots
+              customPaging={customPaging}
+            >
+              {
+                product.images.map(image => (
+                  <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
+                ))
+              }
+            </StyledSlider>
+            <AddToBagContainer>
+              <Select
+                value={selectedOption}
+                options={product.variants.map(variant => ({
+                  value: variant.id,
+                  label: variant.title,
+                  isDisabled: !variant.availableForSale
+                }))}
+                isSearchable={false}
+                styles={selectStyles}
+                placeholder='Select'
+                onChange={option => setSelectedOption(option)}
+              />
+              <AddToBagButton
+                disabled={!selectedOption}
+                onClick={() => checkoutLineItemsReplace({ variables: { checkoutId: localStorage.sandalboyzCheckoutId, lineItems: serializeBagToLineItems(state.bag) } })}
+              >
+                Add To Bag
+              </AddToBagButton>
+            </AddToBagContainer>
+            <DescriptionContainer>
+              <h2>{product.title}</h2>
+              <h6>{product.variants[0].price} USD</h6>
+              <p>{product.description}</p>
+              <SizeChart />
+            </DescriptionContainer>
+          </>
+        )
+      }}
+    </Mutation>
   )
 }
 

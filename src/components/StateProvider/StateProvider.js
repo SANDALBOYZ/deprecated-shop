@@ -6,15 +6,10 @@
 
 import React, { createContext, useReducer } from 'react'
 import reducer from './reducer'
-import type State from './reducer'
 
 export const StateContext = createContext()
 
-const initialState: State = {
-  bagIsOpen: false,
-  menuIsOpen: false,
-  bag: {}
-}
+const initialState = reducer()
 
 export const StateProvider = ({ children }) => (
   <StateContext.Provider value={useReducer(reducer, initialState)}>

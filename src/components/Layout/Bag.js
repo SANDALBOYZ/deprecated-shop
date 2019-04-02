@@ -1,7 +1,7 @@
 // @flow
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { StateContext } from 'components/StateProvider'
+import { StateContext, BAG_SET } from 'components/StateProvider'
 import { rhythm } from 'utils/typography'
 // API
 import { GET_CHECKOUT_NODE } from 'api/queries'
@@ -67,59 +67,68 @@ export const CheckoutButton = styled.button`
   width: 100vw;
 `
 
-type Props = {
-  node: any
-}
-
-const Bag = ({ node }: Props) => {
-  const [state] = useContext(StateContext)
+const Bag = () => {
+  const [state, dispatch] = useContext(StateContext)
   const { bagIsOpen, bag } = state
+  const { items } = bag
 
-  console.log('`Bag`', node)
-  const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
+  console.log(items)
 
   return (
-    <BagContainer isOpen={bagIsOpen}>
-      <BagContent>
-        <BagHeader>Bag</BagHeader>
-        {
-          Object.keys(bag).map((key) => (
-            <div key={key}>
-              <p>{bag[key].metadata.title}</p>
-              <p>Size {bag[key].metadata.selectedOption.label}</p>
-              <p>{bag[key].quantity}</p>
-            </div>
-          ))
+    <Query
+      query={GET_CHECKOUT_NODE}
+      variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
+      onCompleted={(data) => {
+        console.log('`onCompleted`', data)
+        console.log(state)
+
+        if (bag.updatedAt !== data.node.updatedAt) {
+          dispatch({ type: BAG_SET, payload: { checkout: data.node } })
         }
-      </BagContent>
-      <ButtonContainer>
-        <CancelButton>
-          <ButtonText>
-            Cancel
-          </ButtonText>
-        </CancelButton>
-        <CheckoutButton onClick={() => {
-          if (node.webUrl) window.location.href = node.webUrl
-        }}>
-          <ButtonText>
-            Checkout
-          </ButtonText>
-          <span>{totalPrice}</span>
-        </CheckoutButton>
-      </ButtonContainer>
-    </BagContainer>
+      }}
+    >
+      {
+        ({ loading, error, data }) => {
+          const { node } = data
+
+          console.log('Inside `Bag`', node)
+
+          const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
+          return (
+            <BagContainer isOpen={bagIsOpen}>
+              <BagContent>
+                <BagHeader>Bag</BagHeader>
+                {
+                  Object.keys(items).map((key) => (
+                    <div key={key}>
+                  <p>{items[key].metadata.title}</p>
+                  <p>Size {items[key].metadata.selectedOption.label}</p>
+                  <p>{items[key].quantity}</p>
+                    </div>
+                  ))
+                }
+              </BagContent>
+              <ButtonContainer>
+                <CancelButton>
+                  <ButtonText>
+                    Cancel
+                  </ButtonText>
+                </CancelButton>
+                <CheckoutButton onClick={() => {
+                  if (node.webUrl) window.location.href = node.webUrl
+                }}>
+                  <ButtonText>
+                    Checkout
+                  </ButtonText>
+                  <span>{totalPrice}</span>
+                </CheckoutButton>
+              </ButtonContainer>
+            </BagContainer>
+          )
+        }
+      }
+    </Query>
   )
 }
 
-export default () => (
-  <Query
-    query={GET_CHECKOUT_NODE}
-    variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
-  >
-    {
-      ({ data: { node } }) => (
-        <Bag node={node} />
-      )
-    }
-  </Query>
-)
+export default Bag

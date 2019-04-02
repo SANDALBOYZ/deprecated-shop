@@ -36,12 +36,16 @@ const CheckoutSetup = () => (
         }
       }
     </Mutation>
-    { localStorage.getItem('sandalboyzCheckoutId') &&
+    { false && localStorage.getItem('sandalboyzCheckoutId') &&
       <Query
         query={GET_CHECKOUT_NODE}
         variables={{ id: localStorage.getItem('sandalboyzCheckoutId') }}
       >
-        {() => null}
+        {(data) => {
+          console.log('I am inside of `<Query />`. `GET_CHECKOUT_NODE` was fired.', data)
+
+          return null
+        }}
       </Query>
     }
   </>

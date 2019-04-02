@@ -10,11 +10,21 @@ export type State = RootState & {
 }
 
 export const reducer = (
-  { bag: bagState, ...state }: State,
+  state: State,
   action
-): State => ({
-  bag: bagReducer(bagState, action),
-  ...rootReducer(state, action)
-})
+): State => {
+  if (state) {
+    const { bag, ...rootState } = state
+    return {
+      bag: bagReducer(bag, action),
+      ...rootReducer(rootState, action)
+    }
+  } else {
+    return {
+      bag: bagReducer(),
+      ...rootReducer()
+    }
+  }
+}
 
 export default reducer

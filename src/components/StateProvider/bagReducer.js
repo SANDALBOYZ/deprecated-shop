@@ -1,18 +1,42 @@
 // @flow
 import get from 'lodash/get'
+// import set from 'lodash/set'
 
-type BagProduct = {
-  quantity: number
+type BagItem = {
+  quantity: number,
+  metadata: any
 }
 export type BagState = {
-  [productId: string]: BagProduct
+  updatedAt: string,
+  items: [BagItem]
 }
 
 export const BAG_ADD = '@bag/ADD'
-export const BAG_SUBTRACT = '@bag/subtract'
+export const BAG_SUBTRACT = '@bag/SUBTRACT'
 export const BAG_REMOVE = '@bag/REMOVE'
+export const BAG_SET = '@bag/SET'
 
-const initialState: BagState = {}
+const initialState: BagState = {
+  items: []
+}
+
+/**
+ *  Takes `checkoutLineItems` from GraphQL call and turns it into
+ *  something our Bag component can understand.
+ */
+export const deserializeLineItemsToBag = (lineItems): BagState => (
+  lineItems.reduce((bagState: BagState, lineItem) => {
+    const variantId = lineItem.node.variant.id
+    const quantity = lineItem.node.quantity
+
+    return {
+      ...bagState,
+      [`Shopify__ProductVariant__${variantId}`]: {
+        quantity
+      }
+    }
+  }, {})
+)
 
 export const bagReducer = (state: BagState = initialState, action): BagState => {
   switch (get(action, 'type')) {
@@ -59,6 +83,13 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
 
       const { [id]: _, ...without } = state
       return without
+    }
+    case BAG_SET: {
+      console.log('\n\n BAG SET \n\n')
+      return {
+        ...state,
+        updatedAt: action.payload.checkout.updatedAt
+      }
     }
     default:
       return state

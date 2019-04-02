@@ -8,6 +8,7 @@ export const CHECKOUT_FRAGMENT = gql`
     totalTax
     totalPrice
     currencyCode
+    updatedAt
     lineItems (first: 250) {
       edges {
         node {
