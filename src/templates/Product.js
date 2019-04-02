@@ -1,8 +1,9 @@
 // @flow
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
+import { StateContext, BAG_ADD } from 'components/StateProvider'
 // Components
 import Select from 'react-select'
 import Slider from 'react-slick'
@@ -124,55 +125,67 @@ const globalStyles = css`
   }
 `
 
-class Product extends React.Component {
-  customPaging = (i) => {
-    const { pageContext: product } = this.props
+const Product = ({ product }) => {
+  console.log('`pageContext` on `Product.js`', product)
+  const [state, dispatch] = useContext(StateContext)
+  console.log(state)
+  const [selectedOption, setSelectedOption] = useState()
 
+  const customPaging = (i) => {
     return (
       <img src={product.images[i].originalSrc} alt='' />
     )
   }
 
-  render () {
-    const { pageContext: product } = this.props
-
-    return (
-      <Layout>
-        <Global
-          styles={globalStyles}
+  return (
+    <>
+      <Global
+        styles={globalStyles}
+      />
+      <StyledSlider
+        dots
+        customPaging={customPaging}
+      >
+        {
+          product.images.map(image => (
+            <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
+          ))
+        }
+      </StyledSlider>
+      <AddToBagContainer>
+        <Select
+          value={selectedOption}
+          options={product.variants.map(variant => ({
+            value: variant.id,
+            label: variant.title,
+            isDisabled: !variant.availableForSale
+          }))}
+          isSearchable={false}
+          styles={selectStyles}
+          placeholder='Select'
+          onChange={option => setSelectedOption(option)}
         />
-        <StyledSlider
-          dots
-          customPaging={this.customPaging}
+        <AddToBagButton
+          disabled={!selectedOption}
+          onClick={() => dispatch({ type: BAG_ADD, payload: { product, selectedOption } })}
         >
-          {
-            product.images.map(image => (
-              <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
-            ))
-          }
-        </StyledSlider>
-        <AddToBagContainer>
-          <Select
-            options={product.variants.map(variant => ({
-              value: variant.id,
-              label: variant.title,
-              isDisabled: !variant.availableForSale
-            }))}
-            isSearchable={false}
-            styles={selectStyles}
-            placeholder='Select'
-          />
-          <AddToBagButton>Add To Bag</AddToBagButton>
-        </AddToBagContainer>
-        <DescriptionContainer>
-          <h2>{product.title}</h2>
-          <h6>{product.variants[0].price} USD</h6>
-          <p>{product.description}</p>
-          <SizeChart />
-        </DescriptionContainer>
-      </Layout>
-    )
-  }
+          Add To Bag
+        </AddToBagButton>
+      </AddToBagContainer>
+      <DescriptionContainer>
+        <h2>{product.title}</h2>
+        <h6>{product.variants[0].price} USD</h6>
+        <p>{product.description}</p>
+        <SizeChart />
+      </DescriptionContainer>
+    </>
+  )
 }
 
-export default Product
+const Wrapper = ({ pageContext }) => (
+  <Layout>
+    <Product product={pageContext} />
+  </Layout>
+)
+
+export default Wrapper

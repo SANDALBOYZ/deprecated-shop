@@ -1,10 +1,13 @@
 // @flow
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
+// Components
+import { StateContext } from 'components/StateProvider'
 import { Link } from 'gatsby'
-import { fadeInLeftRight } from 'styles/animations.css'
 import SearchBar from './SearchBar'
+// CSS
+import { fadeInLeftRight } from 'styles/animations.css'
 import { HEADER_HEIGHT } from './Header'
 
 const MenuContainer = styled.div`
@@ -33,25 +36,26 @@ const MenuNavItem = styled.li`
   animation: ${fadeInLeftRight} 0.75s ease;
 `
 
-type Props = {
-  isOpen: boolean
-}
+const Menu = () => {
+  const [state] = useContext(StateContext)
+  const { menuIsOpen } = state
 
-const Menu = ({ isOpen }: Props) => (
-  <MenuContainer isOpen={isOpen}>
-    <SearchBar />
-    <MenuNav>
-      <MenuNavItem>
-        <Link to='/products'>Shop</Link>
-      </MenuNavItem>
-      <MenuNavItem>
-        <Link to='/about'>About</Link>
-      </MenuNavItem>
-      <MenuNavItem>
-        <Link to='/help'>Help</Link>
-      </MenuNavItem>
-    </MenuNav>
-  </MenuContainer>
-)
+  return (
+    <MenuContainer isOpen={menuIsOpen}>
+      <SearchBar />
+      <MenuNav>
+        <MenuNavItem>
+          <Link to='/products'>Shop</Link>
+        </MenuNavItem>
+        <MenuNavItem>
+          <Link to='/about'>About</Link>
+        </MenuNavItem>
+        <MenuNavItem>
+          <Link to='/help'>Help</Link>
+        </MenuNavItem>
+      </MenuNav>
+    </MenuContainer>
+  )
+}
 
 export default Menu
