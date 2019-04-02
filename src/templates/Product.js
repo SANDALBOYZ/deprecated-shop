@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
-import { StateContext, BAG_ADD } from 'components/StateProvider'
+import { StateContext } from 'components/StateProvider'
 // Types
 import type BagState from 'components/StateProvider'
 // API
@@ -162,7 +162,7 @@ const Product = ({ product }) => {
         console.log('Inside `Product.js` `<Mutation />`', data)
 
         return (
-          <>
+          <Layout>
             <Global
               styles={globalStyles}
             />
@@ -202,17 +202,11 @@ const Product = ({ product }) => {
               <p>{product.description}</p>
               <SizeChart />
             </DescriptionContainer>
-          </>
+          </Layout>
         )
       }}
     </Mutation>
   )
 }
 
-const Wrapper = ({ pageContext }) => (
-  <Layout>
-    <Product product={pageContext} />
-  </Layout>
-)
-
-export default Wrapper
+export default Product

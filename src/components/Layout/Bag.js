@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { StateContext, BAG_SET } from 'components/StateProvider'
 import { rhythm } from 'utils/typography'

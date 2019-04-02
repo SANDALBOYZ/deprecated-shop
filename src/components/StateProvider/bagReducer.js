@@ -7,6 +7,7 @@ type BagItem = {
   metadata: any
 }
 export type BagState = {
+  checkoutId: string,
   updatedAt: string,
   items: [BagItem]
 }
@@ -88,6 +89,7 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
       console.log('\n\n BAG SET \n\n')
       return {
         ...state,
+        checkoutId: action.payload.checkout.id,
         updatedAt: action.payload.checkout.updatedAt
       }
     }
