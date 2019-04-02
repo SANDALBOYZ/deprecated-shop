@@ -101,9 +101,9 @@ const Bag = () => {
                 {
                   Object.keys(items).map((key) => (
                     <div key={key}>
-                  <p>{items[key].metadata.title}</p>
-                  <p>Size {items[key].metadata.selectedOption.label}</p>
-                  <p>{items[key].quantity}</p>
+                      <p>{items[key].metadata.title}</p>
+                      <p>Size {items[key].metadata.selectedOption.label}</p>
+                      <p>{items[key].quantity}</p>
                     </div>
                   ))
                 }
