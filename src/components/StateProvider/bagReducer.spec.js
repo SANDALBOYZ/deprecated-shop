@@ -1,5 +1,11 @@
 /* eslint-env jest */
-import bagReducer, { BAG_ADD, BAG_SUBTRACT, BAG_REMOVE, deserializeLineItemsToBag } from './bagReducer'
+import {
+  bagReducer,
+  BAG_ADD,
+  BAG_SUBTRACT,
+  BAG_REMOVE,
+  deserializeLineItemsToBagItems
+} from './bagReducer'
 
 describe('bagReducer', () => {
   it('initializes with state', () => {
@@ -186,7 +192,7 @@ describe('bagReducer', () => {
   })
 })
 
-describe('deserializeLineItemsToBag', () => {
+describe('deserializeLineItemsToBagItems', () => {
   it('deserializes graphql data into `BagState`', () => {
     const data = {
       'checkoutLineItemsReplace': {
@@ -201,6 +207,7 @@ describe('deserializeLineItemsToBag', () => {
                   'quantity': 1,
                   'variant': {
                     'id': 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc5MTA0Nzkz',
+                    title: '12',
                     'product': {
                       'title': 'Core Collection 01 |  Black / Metallic Gold',
                       'description': "Our Core Collection consists of a refined interest in high quality basics. We've revisited our classic slide with a refreshingly minimal design. Appropriate for indoor and outdoor wear. Recommended to be used near bodies of water or when cruising at altitudes above 35000 feet. This Black / Metallic Gold special edition comes in a limited quantity, made for NBA All Star Weekend 2018. PU leather pebble-grain upper, high density contrast rope print."
@@ -215,6 +222,7 @@ describe('deserializeLineItemsToBag', () => {
                   'quantity': 2,
                   'variant': {
                     'id': 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc4OTQwOTUz',
+                    title: '13',
                     'product': {
                       'title': 'Core Collection 01 |  Black / Metallic Gold',
                       'description': "Our Core Collection consists of a refined interest in high quality basics. We've revisited our classic slide with a refreshingly minimal design. Appropriate for indoor and outdoor wear. Recommended to be used near bodies of water or when cruising at altitudes above 35000 feet. This Black / Metallic Gold special edition comes in a limited quantity, made for NBA All Star Weekend 2018. PU leather pebble-grain upper, high density contrast rope print."
@@ -229,6 +237,7 @@ describe('deserializeLineItemsToBag', () => {
                   'quantity': 1,
                   'variant': {
                     'id': 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc4ODQyNjQ5',
+                    title: '10',
                     'product': {
                       'title': 'Core Collection 01 |  Black / Metallic Gold',
                       'description': "Our Core Collection consists of a refined interest in high quality basics. We've revisited our classic slide with a refreshingly minimal design. Appropriate for indoor and outdoor wear. Recommended to be used near bodies of water or when cruising at altitudes above 35000 feet. This Black / Metallic Gold special edition comes in a limited quantity, made for NBA All Star Weekend 2018. PU leather pebble-grain upper, high density contrast rope print."
@@ -247,16 +256,22 @@ describe('deserializeLineItemsToBag', () => {
 
     const result = {
       Shopify__ProductVariant__Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc5MTA0Nzkz: {
-        quantity: 1
+        quantity: 1,
+        title: 'Core Collection 01 |  Black / Metallic Gold',
+        variantTitle: '12'
       },
       Shopify__ProductVariant__Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc4OTQwOTUz: {
-        quantity: 2
+        quantity: 2,
+        title: 'Core Collection 01 |  Black / Metallic Gold',
+        variantTitle: '13'
       },
       Shopify__ProductVariant__Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xNTYzNzc4ODQyNjQ5: {
-        quantity: 1
+        quantity: 1,
+        title: 'Core Collection 01 |  Black / Metallic Gold',
+        variantTitle: '10'
       }
     }
 
-    expect(deserializeLineItemsToBag(lineItems)).toEqual(result)
+    expect(deserializeLineItemsToBagItems(lineItems)).toEqual(result)
   })
 })

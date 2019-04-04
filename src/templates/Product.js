@@ -4,6 +4,7 @@ import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
 import { StateContext } from 'components/StateProvider'
+import withProvider from 'withProvider'
 // Types
 import type BagState from 'components/StateProvider'
 // API
@@ -144,38 +145,35 @@ const serializeBagToLineItems = (bag: BagState): [LineItem] => (
   }))
 )
 
-const Product = ({ product }) => {
+const Product = ({ pageContext: product }) => {
   console.log('`pageContext` on `Product.js`', product)
   const [state, dispatch] = useContext(StateContext)
   console.log(state)
   const [selectedOption, setSelectedOption] = useState()
 
-  const customPaging = (i) => {
-    return (
-      <img src={product.images[i].originalSrc} alt='' />
-    )
-  }
+  // TODO: Deprecate `slick.js`.
+  // const customPaging = (i) => {
+  //   return (
+  //     <img src={product.images[i].originalSrc} alt='' />
+  //   )
+  // }
 
   return (
-    <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
+    <Mutation
+      mutation={CHECKOUT_LINE_ITEMS_REPLACE}
+    >
       {(checkoutLineItemsReplace, { loading, error, data }) => {
         console.log('Inside `Product.js` `<Mutation />`', data)
 
         return (
           <Layout>
-            <Global
-              styles={globalStyles}
-            />
-            <StyledSlider
-              dots
-              customPaging={customPaging}
-            >
+            <div>
               {
                 product.images.map(image => (
                   <ProductImage key={image.originalSrc} src={image.originalSrc} alt='' />
                 ))
               }
-            </StyledSlider>
+            </div>
             <AddToBagContainer>
               <Select
                 value={selectedOption}
@@ -190,8 +188,15 @@ const Product = ({ product }) => {
                 onChange={option => setSelectedOption(option)}
               />
               <AddToBagButton
-                disabled={!selectedOption}
-                onClick={() => checkoutLineItemsReplace({ variables: { checkoutId: localStorage.sandalboyzCheckoutId, lineItems: serializeBagToLineItems(state.bag) } })}
+                disabled={!selectedOption || loading}
+                onClick={() =>
+                  checkoutLineItemsReplace({
+                    variables: {
+                      checkoutId: localStorage.sandalboyzCheckoutId,
+                      lineItems: serializeBagToLineItems(state.bag)
+                    }
+                  })
+                }
               >
                 Add To Bag
               </AddToBagButton>
@@ -209,4 +214,4 @@ const Product = ({ product }) => {
   )
 }
 
-export default Product
+export default withProvider(Product)

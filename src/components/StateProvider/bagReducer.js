@@ -25,19 +25,18 @@ const initialState: BagState = {
  *  Takes `checkoutLineItems` from GraphQL call and turns it into
  *  something our Bag component can understand.
  */
-export const deserializeLineItemsToBag = (lineItems): BagState => (
-  lineItems.reduce((bagState: BagState, lineItem) => {
-    const variantId = lineItem.node.variant.id
-    const quantity = lineItem.node.quantity
-
+export const deserializeLineItemsToBagItems = (lineItems): [BagItem] => {
+  return lineItems.reduce((bagState: BagState, { node }) => {
     return {
       ...bagState,
-      [`Shopify__ProductVariant__${variantId}`]: {
-        quantity
+      [`Shopify__ProductVariant__${node.variant.id}`]: {
+        quantity: node.quantity,
+        title: node.title,
+        variantTitle: node.variant.title
       }
     }
   }, {})
-)
+}
 
 export const bagReducer = (state: BagState = initialState, action): BagState => {
   switch (get(action, 'type')) {
@@ -86,11 +85,13 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
       return without
     }
     case BAG_SET: {
-      console.log('\n\n BAG SET \n\n')
+      const { payload: { checkout } } = action
+
       return {
         ...state,
-        checkoutId: action.payload.checkout.id,
-        updatedAt: action.payload.checkout.updatedAt
+        checkoutId: checkout.id,
+        updatedAt: checkout.updatedAt,
+        items: deserializeLineItemsToBagItems(checkout.lineItems.edges)
       }
     }
     default:

@@ -5,13 +5,11 @@
  */
 
 import React, { useContext, useEffect } from 'react'
-import { ApolloProvider } from 'react-apollo'
 import { Global } from '@emotion/core'
 import styled from '@emotion/styled'
-// API
-import client from 'api/client'
+import withProvider from 'withProvider'
 // Components
-import { StateContext, StateProvider } from 'components/StateProvider'
+import { StateContext } from 'components/StateProvider'
 import CheckoutSetup from './CheckoutSetup'
 import Header, { HEADER_HEIGHT } from './Header'
 import Footer from './Footer'
@@ -46,18 +44,6 @@ export const Layout = ({ children }) => {
       <Content>{children}</Content>
       <Footer />
     </>
-  )
-}
-
-const withProvider = (component) => {
-  const Component = component
-
-  return (props) => (
-    <StateProvider>
-      <ApolloProvider client={client}>
-        <Component {...props} />
-      </ApolloProvider>
-    </StateProvider>
   )
 }
 
