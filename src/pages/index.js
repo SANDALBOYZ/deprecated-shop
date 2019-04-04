@@ -1,7 +1,8 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import styled from '@emotion/styled'
-import { Layout } from '../components/Layout'
+import { Layout } from 'components/Layout'
+import withProvider from 'withProvider'
 
 const PinkDiv = styled.div`
   margin: 1rem;
@@ -41,4 +42,4 @@ export const query = graphql`
   }
 `
 
-export default Index
+export default withProvider(Index)

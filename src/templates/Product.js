@@ -147,6 +147,7 @@ const serializeBagToLineItems = ({ items }: BagState): [LineItem] => (
 
 const Product = ({ pageContext: product }) => {
   const [state] = useContext(StateContext)
+  console.log('PRODUCT state', state)
   const [selectedOption, setSelectedOption] = useState()
 
   return (
@@ -179,25 +180,17 @@ const Product = ({ pageContext: product }) => {
               <AddToBagButton
                 disabled={!selectedOption || loading}
                 onClick={() => {
-                  console.log('\n\n\nstartasdfasdfasfdsafdasfadsfasdfdsafas')
-                  console.log(selectedOption)
-                  const reduced = bagReducer(state.bag, {
+                  const lineItems = serializeBagToLineItems(bagReducer(state.bag, {
                     type: BAG_ADD,
                     payload: { selectedOption }
-                  })
-                  console.log(reduced)
+                  }))
 
-                  const lineItems = serializeBagToLineItems(
-                    reduced
-                  )
-                  console.log('lineItems RESULT!', lineItems)
                   checkoutLineItemsReplace({
                     variables: {
                       checkoutId: localStorage.sandalboyzCheckoutId,
                       lineItems
                     }
                   })
-                  console.log('end\n\n\n')
                 }}
               >
                 Add To Bag

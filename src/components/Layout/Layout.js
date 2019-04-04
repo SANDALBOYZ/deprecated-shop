@@ -1,13 +1,7 @@
 // @flow
-
-/**
- * This is pretty much the entry point for the application.
- */
-
 import React, { useContext, useEffect } from 'react'
 import { Global } from '@emotion/core'
 import styled from '@emotion/styled'
-import withProvider from 'withProvider'
 // Components
 import { StateContext } from 'components/StateProvider'
 import CheckoutSetup from './CheckoutSetup'
@@ -47,4 +41,4 @@ export const Layout = ({ children }) => {
   )
 }
 
-export default withProvider(Layout)
+export default Layout

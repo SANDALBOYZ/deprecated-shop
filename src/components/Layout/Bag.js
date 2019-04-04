@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { StateContext, BAG_SET } from 'components/StateProvider'
 import { rhythm } from 'utils/typography'
+import get from 'lodash/get'
 // API
 import { GET_CHECKOUT_NODE } from 'api/queries'
 // Components
@@ -69,8 +70,11 @@ export const CheckoutButton = styled.button`
 
 const Bag = () => {
   const [state, dispatch] = useContext(StateContext)
+  console.log('BAG state', state)
   const { bagIsOpen, bag } = state
   const { items } = bag
+
+  if (!window.localStorage.sandalboyzCheckoutId) return null
 
   return (
     <Query
@@ -84,9 +88,12 @@ const Bag = () => {
     >
       {
         ({ loading, error, data }) => {
-          const { node } = data
+          const node = get(data, 'node')
+
+          if (!node) return null
 
           const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
+
           return (
             <BagContainer isOpen={bagIsOpen}>
               <BagContent>

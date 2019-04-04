@@ -18,6 +18,7 @@ export const BAG_ADD = '@bag/ADD'
 export const BAG_SUBTRACT = '@bag/SUBTRACT'
 export const BAG_REMOVE = '@bag/REMOVE'
 export const BAG_SET = '@bag/SET'
+export const BAG_SET_CHECKOUT_ID = '@bag/SET_CHECKOUT_ID'
 
 const initialState: BagState = {
   items: []
@@ -98,6 +99,15 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
         checkoutId: checkout.id,
         updatedAt: checkout.updatedAt,
         items: deserializeLineItemsToBagItems(checkout.lineItems.edges)
+      }
+    }
+    case BAG_SET_CHECKOUT_ID: {
+      const { payload: { checkout } } = action
+
+      return {
+        ...state,
+        checkoutId: checkout.id,
+        updatedAt: checkout.updatedAt
       }
     }
     default:

@@ -52,6 +52,7 @@ const NavItem = styled.div`
 
 const Header = () => {
   const [state, dispatch] = useContext(StateContext)
+  console.log('HEADER state', state)
   const { bagIsOpen, menuIsOpen } = state
 
   return (
