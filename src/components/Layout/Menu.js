@@ -48,6 +48,9 @@ const Menu = () => {
           <Link to='/products'>Shop</Link>
         </MenuNavItem>
         <MenuNavItem>
+          <Link to='/media'>Media</Link>
+        </MenuNavItem>
+        <MenuNavItem>
           <Link to='/about'>About</Link>
         </MenuNavItem>
         <MenuNavItem>
