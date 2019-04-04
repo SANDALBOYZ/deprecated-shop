@@ -1,7 +1,7 @@
 // @flow
 import React, { useContext } from 'react'
 import styled from '@emotion/styled'
-import { StateContext, BAG_SET } from 'components/StateProvider'
+import { StateContext, BAG_SET, CLOSE_BAG } from 'components/StateProvider'
 import { rhythm } from 'utils/typography'
 import get from 'lodash/get'
 // API
@@ -109,7 +109,9 @@ const Bag = () => {
                 }
               </BagContent>
               <ButtonContainer>
-                <CancelButton>
+                <CancelButton
+                  onClick={() => dispatch({ type: CLOSE_BAG })}
+                >
                   <ButtonText>
                     Cancel
                   </ButtonText>
