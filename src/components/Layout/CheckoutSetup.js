@@ -1,7 +1,7 @@
 // This is a NON-PRESENTATIONAL component. It uses Apollo to set up necessary API stuff.
 import React, { useContext } from 'react'
-import { Mutation, Query } from 'react-apollo'
-import { CREATE_CHECKOUT, GET_CHECKOUT_NODE } from 'api/queries'
+import { Mutation } from 'react-apollo'
+import { CREATE_CHECKOUT } from 'api/queries'
 import { StateContext, BAG_SET_CHECKOUT_ID } from 'components/StateProvider'
 
 const { localStorage } = window
