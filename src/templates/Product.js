@@ -1,9 +1,9 @@
 // @flow
 import React, { useContext, useState } from 'react'
-import { css, Global } from '@emotion/core'
+// import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
-import { StateContext } from 'components/StateProvider'
+import { StateContext, bagReducer, BAG_ADD } from 'components/StateProvider'
 import withProvider from 'withProvider'
 // Types
 import type BagState from 'components/StateProvider'
@@ -12,15 +12,15 @@ import { CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 // Components
 import { Mutation } from 'react-apollo'
 import Select from 'react-select'
-import Slider from 'react-slick'
+// import Slider from 'react-slick'
 import Layout from 'components/Layout'
 // Styles
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-const StyledSlider = styled(Slider)`
-  margin-bottom: ${rhythm(1)};
-`
+// const StyledSlider = styled(Slider)`
+//   margin-bottom: ${rhythm(1)};
+// `
 
 const ProductImage = styled.img`
   margin: 0;
@@ -107,29 +107,29 @@ const SizeChart = styled.span`
 `
 
 // `react-slick` overrides
-const globalStyles = css`
-  .slick-list {
-    height: 100vw !important;
-    margin-bottom: 5px !important;
-  }
-
-  .slick-dots {
-    display: flex !important;
-    position: inherit !important;
-    bottom: auto !important;
-    flex-wrap: wrap;
-  }
-
-  .slick-dots li {
-    margin: 0 !important;
-    height: calc((100vw - 10px) / 3) !important;
-    width: calc((100vw - 10px) / 3) !important;
-  }
-
-  .slick-dots li:nth-child(even) {
-    margin: 0 5px !important;
-  }
-`
+// const globalStyles = css`
+//   .slick-list {
+//     height: 100vw !important;
+//     margin-bottom: 5px !important;
+//   }
+//
+//   .slick-dots {
+//     display: flex !important;
+//     position: inherit !important;
+//     bottom: auto !important;
+//     flex-wrap: wrap;
+//   }
+//
+//   .slick-dots li {
+//     margin: 0 !important;
+//     height: calc((100vw - 10px) / 3) !important;
+//     width: calc((100vw - 10px) / 3) !important;
+//   }
+//
+//   .slick-dots li:nth-child(even) {
+//     margin: 0 5px !important;
+//   }
+// `
 
 const { localStorage } = window
 
@@ -138,33 +138,22 @@ type LineItem = {
   variantId: string
 }
 
-const serializeBagToLineItems = (bag: BagState): [LineItem] => (
-  Object.keys(bag).map((itemId: string) => ({
-    quantity: bag[itemId].quantity,
+const serializeBagToLineItems = ({ items }: BagState): [LineItem] => (
+  Object.keys(items).map((itemId: string) => ({
+    quantity: items[itemId].quantity,
     variantId: itemId.replace('Shopify__ProductVariant__', '')
   }))
 )
 
 const Product = ({ pageContext: product }) => {
-  console.log('`pageContext` on `Product.js`', product)
-  const [state, dispatch] = useContext(StateContext)
-  console.log(state)
+  const [state] = useContext(StateContext)
   const [selectedOption, setSelectedOption] = useState()
-
-  // TODO: Deprecate `slick.js`.
-  // const customPaging = (i) => {
-  //   return (
-  //     <img src={product.images[i].originalSrc} alt='' />
-  //   )
-  // }
 
   return (
     <Mutation
       mutation={CHECKOUT_LINE_ITEMS_REPLACE}
     >
       {(checkoutLineItemsReplace, { loading, error, data }) => {
-        console.log('Inside `Product.js` `<Mutation />`', data)
-
         return (
           <Layout>
             <div>
@@ -189,14 +178,27 @@ const Product = ({ pageContext: product }) => {
               />
               <AddToBagButton
                 disabled={!selectedOption || loading}
-                onClick={() =>
+                onClick={() => {
+                  console.log('\n\n\nstartasdfasdfasfdsafdasfadsfasdfdsafas')
+                  console.log(selectedOption)
+                  const reduced = bagReducer(state.bag, {
+                    type: BAG_ADD,
+                    payload: { selectedOption }
+                  })
+                  console.log(reduced)
+
+                  const lineItems = serializeBagToLineItems(
+                    reduced
+                  )
+                  console.log('lineItems RESULT!', lineItems)
                   checkoutLineItemsReplace({
                     variables: {
                       checkoutId: localStorage.sandalboyzCheckoutId,
-                      lineItems: serializeBagToLineItems(state.bag)
+                      lineItems
                     }
                   })
-                }
+                  console.log('end\n\n\n')
+                }}
               >
                 Add To Bag
               </AddToBagButton>

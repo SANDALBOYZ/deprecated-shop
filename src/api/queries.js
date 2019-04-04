@@ -60,13 +60,15 @@ export const CHECKOUT_LINE_ITEMS_REPLACE = gql`
   ${CHECKOUT_FRAGMENT}
 
   mutation checkoutLineItemsReplace($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
-    userErrors {
-      code
-      field
-      message
-    }
-    checkout {
-      ...CheckoutFragment
+    checkoutLineItemsReplace(lineItems: $lineItems, checkoutId: $checkoutId) {
+      checkout {
+        ...CheckoutFragment
+      }
+      userErrors {
+        code
+        field
+        message
+      }
     }
   }
 `

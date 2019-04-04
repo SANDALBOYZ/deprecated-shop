@@ -72,16 +72,11 @@ const Bag = () => {
   const { bagIsOpen, bag } = state
   const { items } = bag
 
-  console.log(items)
-
   return (
     <Query
       query={GET_CHECKOUT_NODE}
       variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
       onCompleted={(data) => {
-        console.log('`onCompleted`', data)
-        console.log(state)
-
         if (bag.updatedAt !== data.node.updatedAt) {
           dispatch({ type: BAG_SET, payload: { checkout: data.node } })
         }
@@ -90,8 +85,6 @@ const Bag = () => {
       {
         ({ loading, error, data }) => {
           const { node } = data
-
-          console.log('Inside `Bag`', node)
 
           const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
           return (

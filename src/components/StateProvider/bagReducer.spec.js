@@ -17,7 +17,10 @@ describe('bagReducer', () => {
   })
 
   it('adds a new item to bag', () => {
-    const initialState = {}
+    const initialState = {
+      items: []
+    }
+
     const action = {
       type: BAG_ADD,
       payload: {
@@ -34,16 +37,9 @@ describe('bagReducer', () => {
     }
 
     const result = {
-      selectedOptionValue: {
-        quantity: 1,
-        metadata: {
-          id: 'someId',
-          title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+      items: {
+        selectedOptionValue: {
+          quantity: 1
         }
       }
     }
@@ -53,16 +49,9 @@ describe('bagReducer', () => {
 
   it('increments existing item in bag', () => {
     const initialState = {
-      selectedOptionValue: {
-        quantity: 1,
-        metadata: {
-          id: 'someId',
-          title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+      items: {
+        selectedOptionValue: {
+          quantity: 1
         }
       }
     }
@@ -83,16 +72,9 @@ describe('bagReducer', () => {
     }
 
     const result = {
-      selectedOptionValue: {
-        quantity: 2,
-        metadata: {
-          id: 'someId',
-          title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+      items: {
+        selectedOptionValue: {
+          quantity: 2
         }
       }
     }

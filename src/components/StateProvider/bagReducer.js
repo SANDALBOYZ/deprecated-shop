@@ -9,7 +9,9 @@ type BagItem = {
 export type BagState = {
   checkoutId: string,
   updatedAt: string,
-  items: [BagItem]
+  items: {
+    [itemId: string]: BagItem
+  }
 }
 
 export const BAG_ADD = '@bag/ADD'
@@ -43,21 +45,25 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
     case BAG_ADD: {
       const id = get(action, 'payload.selectedOption.value')
 
-      if (state[id]) {
+      if (state.items[id]) {
         return {
           ...state,
-          [id]: {
-            ...state[id],
-            quantity: state[id].quantity + 1
+          items: {
+            ...state.items,
+            [id]: {
+              ...state.items[id],
+              quantity: state.items[id].quantity + 1
+            }
           }
         }
       } else {
-        const { product, selectedOption } = action.payload
         return {
           ...state,
-          [id]: {
-            quantity: 1,
-            metadata: { ...product, selectedOption }
+          items: {
+            ...state.items,
+            [id]: {
+              quantity: 1
+            }
           }
         }
       }

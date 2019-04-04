@@ -4,7 +4,7 @@
  * Application state management.
  */
 
-import React, { createContext, useEffect, useReducer } from 'react'
+import React, { createContext, useReducer } from 'react'
 import reducer from './reducer'
 
 export const StateContext = createContext()
