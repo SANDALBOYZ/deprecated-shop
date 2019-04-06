@@ -29,6 +29,19 @@ export const BagContainer = styled.div`
   padding-top: ${HEADER_HEIGHT};
 `
 
+export const BagUpdatingModal = styled.div`
+  position: absolute;
+  display: ${({ isOpen }) => isOpen ? 'flex' : 'none'};
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+  background: black;
+  color: white;
+`
+
 export const BagContent = styled.div`
   padding: ${rhythm(1)};
   overflow-y: scroll;
@@ -95,11 +108,17 @@ const Bag = () => {
       }}
     >
       {
-        ({ loading, error, data }) => (
+        ({ queryLoading, queryError, queryData }) => (
           <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
             {
-              (checkoutLineItemsReplace, { loading, error, data }) => (
+              (checkoutLineItemsReplace, { mutationLoading, mutationError, mutationData }) => (
                 <BagContainer isOpen={bagIsOpen}>
+                  {
+                    (queryLoading || mutationLoading) && <div>Loading!</div>
+                  }
+                  <BagUpdatingModal isOpen={queryLoading || mutationLoading}>
+                    Updating Bag...
+                  </BagUpdatingModal>
                   <BagContent>
                     <BagHeader>Bag</BagHeader>
                     {
@@ -115,7 +134,12 @@ const Bag = () => {
                                 payload: { id: itemId }
                               }))
 
-                              console.log(lineItems)
+                              checkoutLineItemsReplace({
+                                variables: {
+                                  checkoutId: window.localStorage.sandalboyzCheckoutId,
+                                  lineItems
+                                }
+                              })
                             }}
                           >
                             Remove
