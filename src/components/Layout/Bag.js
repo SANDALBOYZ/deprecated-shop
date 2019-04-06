@@ -108,14 +108,18 @@ const Bag = () => {
       }}
     >
       {
-        ({ queryLoading, queryError, queryData }) => (
+        ({ loading: queryLoading, error: queryError, data: queryData }) => (
           <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
             {
-              (checkoutLineItemsReplace, { mutationLoading, mutationError, mutationData }) => (
+              (
+                checkoutLineItemsReplace,
+                {
+                  loading: mutationLoading,
+                  error: mutationError,
+                  data: mutationData
+                }
+              ) => (
                 <BagContainer isOpen={bagIsOpen}>
-                  {
-                    (queryLoading || mutationLoading) && <div>Loading!</div>
-                  }
                   <BagUpdatingModal isOpen={queryLoading || mutationLoading}>
                     Updating Bag...
                   </BagUpdatingModal>

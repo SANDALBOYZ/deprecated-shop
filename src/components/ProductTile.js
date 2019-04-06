@@ -7,7 +7,7 @@ type ProductTileProps = {
   title: string,
   price: string,
   currency: string,
-  image: string
+  imageSrc: string
 }
 
 const Container = styled.div`

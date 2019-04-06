@@ -1,6 +1,7 @@
 // @flow
 import get from 'lodash/get'
 // import set from 'lodash/set'
+import type Action from './types'
 
 type BagItem = {
   quantity: number,
@@ -8,16 +9,16 @@ type BagItem = {
   variantTitle: string
 }
 export type BagState = {
-  checkoutId: string,
-  updatedAt: string,
-  items: {
+  checkoutId?: string,
+  updatedAt?: string,
+  items?: {
     [itemId: string]: BagItem
   },
-  subtotalPrice: string,
-  totalTax: string,
-  totalPrice: string,
-  currencyCode: string,
-  checkoutWebUrl: string
+  subtotalPrice?: string,
+  totalTax?: string,
+  totalPrice?: string,
+  currencyCode?: string,
+  checkoutWebUrl?: string
 }
 
 export const BAG_ADD = '@bag/ADD'
@@ -33,7 +34,7 @@ const initialState: BagState = {
  *  Takes `checkoutLineItems` from GraphQL call and turns it into
  *  something our Bag component can understand.
  */
-export const deserializeLineItemsToBagItems = (lineItems): [BagItem] => {
+export const deserializeLineItemsToBagItems = (lineItems: [any]): [BagItem] => {
   return lineItems.reduce((bagState: BagState, { node }) => {
     return {
       ...bagState,
@@ -46,7 +47,7 @@ export const deserializeLineItemsToBagItems = (lineItems): [BagItem] => {
   }, {})
 }
 
-export const bagReducer = (state: BagState = initialState, action): BagState => {
+export const bagReducer = (state: BagState = initialState, action: Action): BagState => {
   switch (get(action, 'type')) {
     case BAG_ADD: {
       const id = get(action, 'payload.selectedOption.value')

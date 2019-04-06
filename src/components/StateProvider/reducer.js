@@ -1,9 +1,9 @@
 // @flow
 import type BagState from './bagReducer'
 import type RootState from './rootReducer'
-
 import rootReducer from './rootReducer'
 import { bagReducer } from './bagReducer'
+import type Action from './types'
 
 export type State = RootState & {
   bag: BagState
@@ -11,7 +11,7 @@ export type State = RootState & {
 
 export const reducer = (
   state: State,
-  action
+  action: Action
 ): State => {
   if (state) {
     const { bag, ...rootState } = state

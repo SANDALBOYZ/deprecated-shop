@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import * as React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import client from 'api/client'
 import { StateProvider } from 'components/StateProvider'
@@ -8,10 +8,10 @@ import { StateProvider } from 'components/StateProvider'
  *  `withProvider` should only be used with the TOP LEVEL COMPONENT.
  *  These are typically files from `pages` and `templates`.
  */
-export const withProvider = (component) => {
+export const withProvider = (component: React.Node) => {
   const Component = component
 
-  return (props) => (
+  return (props: any) => (
     <StateProvider>
       <ApolloProvider client={client}>
         <Component {...props} />
