@@ -1,12 +1,11 @@
 // @flow
 import React from 'react'
 import { graphql } from 'gatsby'
+import withProvider from 'withProvider'
 import { Layout } from 'components/Layout'
 import ProductTile from 'components/ProductTile'
 
 const Products = ({ data: { allShopifyProduct: { edges } } }) => {
-  console.log(edges)
-
   return (
     <Layout>
       <div>
@@ -27,7 +26,7 @@ const Products = ({ data: { allShopifyProduct: { edges } } }) => {
   )
 }
 
-export default Products
+export default withProvider(Products)
 
 export const query = graphql`
   query {

@@ -4,7 +4,8 @@ import React from 'react'
 type Props = {
   title: string,
   description: string,
-  price: string
+  price: string,
+  imgSrc: string
 }
 
 const BagItem = ({ title, description, price, imgSrc }: Props) => (

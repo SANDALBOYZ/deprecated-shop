@@ -30,7 +30,7 @@ const headerStyles = css`
   top: 0;
   background-color: white;
   height: ${HEADER_HEIGHT};
-  width: 100%;
+  width: 100vw;
   line-height: ${rhythm(0.8)};
   padding: ${rhythm(0.8)} ${rhythm(0.7)};
   display: grid;
@@ -52,6 +52,7 @@ const NavItem = styled.div`
 
 const Header = () => {
   const [state, dispatch] = useContext(StateContext)
+  console.log('HEADER state', state)
   const { bagIsOpen, menuIsOpen } = state
 
   return (

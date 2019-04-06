@@ -1,55 +1,102 @@
 // @flow
 import get from 'lodash/get'
+// import set from 'lodash/set'
+import type Action from './types'
 
-type BagProduct = {
-  quantity: number
+type BagItem = {
+  quantity: number,
+  title: string,
+  variantTitle: string
 }
+
+type BagItems = {
+  [itemId: string]: BagItem
+}
+
 export type BagState = {
-  [productId: string]: BagProduct
+  checkoutId?: string,
+  updatedAt?: string,
+  items: BagItems,
+  subtotalPrice?: string,
+  totalTax?: string,
+  totalPrice?: string,
+  currencyCode?: string,
+  checkoutWebUrl?: string
 }
 
 export const BAG_ADD = '@bag/ADD'
-export const BAG_SUBTRACT = '@bag/subtract'
+export const BAG_SUBTRACT = '@bag/SUBTRACT'
 export const BAG_REMOVE = '@bag/REMOVE'
+export const BAG_SET = '@bag/SET'
 
-const initialState: BagState = {}
+const initialState: BagState = {
+  items: {}
+}
 
-export const bagReducer = (state: BagState = initialState, action): BagState => {
+/**
+ *  Takes `checkoutLineItems` from GraphQL call and turns it into
+ *  something our Bag component can understand.
+ */
+export const deserializeLineItemsToBagItems = (lineItems: [any]): BagItems => {
+  return lineItems.reduce((bagItemsState: BagItems, { node }) => {
+    return {
+      ...bagItemsState,
+      [`Shopify__ProductVariant__${node.variant.id}`]: {
+        quantity: node.quantity,
+        title: node.title,
+        variantTitle: node.variant.title
+      }
+    }
+  }, {})
+}
+
+export const bagReducer = (state: BagState = initialState, action: Action): BagState => {
   switch (get(action, 'type')) {
     case BAG_ADD: {
       const id = get(action, 'payload.selectedOption.value')
 
-      if (state[id]) {
+      if (state.items[id]) {
         return {
           ...state,
-          [id]: {
-            ...state[id],
-            quantity: state[id].quantity + 1
+          items: {
+            ...state.items,
+            [id]: {
+              ...state.items[id],
+              quantity: state.items[id].quantity + 1
+            }
           }
         }
       } else {
-        const { product, selectedOption } = action.payload
         return {
           ...state,
-          [id]: {
-            quantity: 1,
-            metadata: { ...product, selectedOption }
+          items: {
+            ...state.items,
+            [id]: {
+              quantity: 1
+            }
           }
         }
       }
     }
     case BAG_SUBTRACT: {
       const id = action.payload.id
+      const { items } = state
 
-      if (state[id].quantity === 1) {
-        const { [id]: _, ...without } = state
-        return without
+      if (items[id].quantity === 1) {
+        const { [id]: _, ...without } = items
+        return {
+          ...state,
+          items: without
+        }
       } else {
         return {
           ...state,
-          [id]: {
-            ...state[id],
-            quantity: state[id].quantity - 1
+          items: {
+            ...items,
+            [id]: {
+              ...items[id],
+              quantity: items[id].quantity - 1
+            }
           }
         }
       }
@@ -57,8 +104,26 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
     case BAG_REMOVE: {
       const id = action.payload.id
 
-      const { [id]: _, ...without } = state
-      return without
+      const { [id]: _, ...without } = state.items
+      return {
+        ...state,
+        items: without
+      }
+    }
+    case BAG_SET: {
+      const { payload: { checkout } } = action
+
+      return {
+        ...state,
+        checkoutId: checkout.id,
+        updatedAt: checkout.updatedAt,
+        subtotalPrice: checkout.subtotalPrice,
+        totalTax: checkout.totalTax,
+        totalPrice: checkout.totalPrice,
+        currencyCode: checkout.currencyCode,
+        checkoutWebUrl: checkout.webUrl,
+        items: deserializeLineItemsToBagItems(checkout.lineItems.edges)
+      }
     }
     default:
       return state

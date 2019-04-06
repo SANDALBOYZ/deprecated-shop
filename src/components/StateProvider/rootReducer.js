@@ -1,14 +1,24 @@
 // @flow
-type RootState = {
-  bagIsOpen: boolean,
-  menuIsOpen: boolean
+import get from 'lodash/get'
+import type Action from './types'
+
+export type RootState = {
+  bagIsOpen?: boolean,
+  menuIsOpen?: boolean
 }
 
 export const TOGGLE_BAG = 'TOGGLE_BAG'
 export const TOGGLE_MENU = 'TOGGLE_MENU'
+export const CLOSE_BAG = 'CLOSE_BAG'
+export const CLOSE_MENU = 'CLOSE_MENU'
 
-export const rootReducer = (state: RootState, action): RootState => {
-  switch (action.type) {
+const initialState: RootState = {
+  bagIsOpen: false,
+  menuIsOpen: false
+}
+
+export const rootReducer = (state: RootState = initialState, action: Action): RootState => {
+  switch (get(action, 'type')) {
     case TOGGLE_BAG:
       return {
         ...state,
@@ -20,6 +30,16 @@ export const rootReducer = (state: RootState, action): RootState => {
         ...state,
         bagIsOpen: false,
         menuIsOpen: !state.menuIsOpen
+      }
+    case CLOSE_BAG:
+      return {
+        ...state,
+        bagIsOpen: false
+      }
+    case CLOSE_MENU:
+      return {
+        ...state,
+        menuIsOpen: false
       }
     default:
       return state

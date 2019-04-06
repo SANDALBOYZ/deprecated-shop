@@ -1,5 +1,6 @@
 import React from 'react'
-import { Layout } from '../components/Layout'
+import { Layout } from 'components/Layout'
+import withProvider from 'withProvider'
 
 const About = () => (
   <Layout>
@@ -7,4 +8,4 @@ const About = () => (
   </Layout>
 )
 
-export default About
+export default withProvider(About)

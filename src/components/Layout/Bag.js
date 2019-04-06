@@ -1,12 +1,19 @@
 // @flow
 import React, { useContext } from 'react'
 import styled from '@emotion/styled'
-import { StateContext } from 'components/StateProvider'
+import {
+  StateContext,
+  bagReducer,
+  BAG_SET,
+  BAG_REMOVE,
+  CLOSE_BAG
+} from 'components/StateProvider'
 import { rhythm } from 'utils/typography'
+import { serializeBagToLineItems } from 'utils/serializers'
 // API
-import { GET_CHECKOUT_NODE } from 'api/queries'
+import { GET_CHECKOUT_NODE, CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 // Components
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 // CSS
 import { HEADER_HEIGHT } from './Header'
 
@@ -20,6 +27,19 @@ export const BagContainer = styled.div`
   top: 0;
   z-index: 900;
   padding-top: ${HEADER_HEIGHT};
+`
+
+export const BagUpdatingModal = styled.div`
+  position: absolute;
+  display: ${({ isOpen }) => isOpen ? 'flex' : 'none'};
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+  background: black;
+  color: white;
 `
 
 export const BagContent = styled.div`
@@ -67,59 +87,96 @@ export const CheckoutButton = styled.button`
   width: 100vw;
 `
 
-type Props = {
-  node: any
-}
-
-const Bag = ({ node }: Props) => {
-  const [state] = useContext(StateContext)
+const Bag = () => {
+  const [state, dispatch] = useContext(StateContext)
+  console.log('BAG state', state)
   const { bagIsOpen, bag } = state
+  const { items } = bag
 
-  console.log('`Bag`', node)
-  const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
+  const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
+
+  if (!window.localStorage.sandalboyzCheckoutId) return null
 
   return (
-    <BagContainer isOpen={bagIsOpen}>
-      <BagContent>
-        <BagHeader>Bag</BagHeader>
-        {
-          Object.keys(bag).map((key) => (
-            <div key={key}>
-              <p>{bag[key].metadata.title}</p>
-              <p>Size {bag[key].metadata.selectedOption.label}</p>
-              <p>{bag[key].quantity}</p>
-            </div>
-          ))
+    <Query
+      query={GET_CHECKOUT_NODE}
+      variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
+      onCompleted={(data) => {
+        if (bag.updatedAt !== data.node.updatedAt) {
+          dispatch({ type: BAG_SET, payload: { checkout: data.node } })
         }
-      </BagContent>
-      <ButtonContainer>
-        <CancelButton>
-          <ButtonText>
-            Cancel
-          </ButtonText>
-        </CancelButton>
-        <CheckoutButton onClick={() => {
-          if (node.webUrl) window.location.href = node.webUrl
-        }}>
-          <ButtonText>
-            Checkout
-          </ButtonText>
-          <span>{totalPrice}</span>
-        </CheckoutButton>
-      </ButtonContainer>
-    </BagContainer>
+      }}
+    >
+      {
+        ({ loading: queryLoading, error: queryError, data: queryData }) => (
+          <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
+            {
+              (
+                checkoutLineItemsReplace,
+                {
+                  loading: mutationLoading,
+                  error: mutationError,
+                  data: mutationData
+                }
+              ) => (
+                <BagContainer isOpen={bagIsOpen}>
+                  <BagUpdatingModal isOpen={queryLoading || mutationLoading}>
+                    Updating Bag...
+                  </BagUpdatingModal>
+                  <BagContent>
+                    <BagHeader>Bag</BagHeader>
+                    {
+                      Object.keys(items).map((itemId) => (
+                        <div key={itemId}>
+                          <p>{items[itemId].title}</p>
+                          <p>Size {items[itemId].variantTitle}</p>
+                          <p>{items[itemId].quantity}</p>
+                          <p
+                            onClick={() => {
+                              const lineItems = serializeBagToLineItems(bagReducer(bag, {
+                                type: BAG_REMOVE,
+                                payload: { id: itemId }
+                              }))
+
+                              checkoutLineItemsReplace({
+                                variables: {
+                                  checkoutId: window.localStorage.sandalboyzCheckoutId,
+                                  lineItems
+                                }
+                              })
+                            }}
+                          >
+                            Remove
+                          </p>
+                        </div>
+                      ))
+                    }
+                  </BagContent>
+                  <ButtonContainer>
+                    <CancelButton
+                      onClick={() => dispatch({ type: CLOSE_BAG })}
+                    >
+                      <ButtonText>
+                        Cancel
+                      </ButtonText>
+                    </CancelButton>
+                    <CheckoutButton onClick={() => {
+                      if (bag.webUrl) window.location.href = bag.webUrl
+                    }}>
+                      <ButtonText>
+                        Checkout
+                      </ButtonText>
+                      <span>{totalPrice}</span>
+                    </CheckoutButton>
+                  </ButtonContainer>
+                </BagContainer>
+              )
+            }
+          </Mutation>
+        )
+      }
+    </Query>
   )
 }
 
-export default () => (
-  <Query
-    query={GET_CHECKOUT_NODE}
-    variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
-  >
-    {
-      ({ data: { node } }) => (
-        <Bag node={node} />
-      )
-    }
-  </Query>
-)
+export default Bag
