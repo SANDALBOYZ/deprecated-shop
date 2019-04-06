@@ -2,7 +2,7 @@
 import get from 'lodash/get'
 import type Action from './types'
 
-type RootState = {
+export type RootState = {
   bagIsOpen?: boolean,
   menuIsOpen?: boolean
 }

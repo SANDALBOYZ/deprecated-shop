@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * Application state management.
  */
@@ -11,7 +9,7 @@ export const StateContext = createContext()
 
 const initialState = reducer()
 
-export const StateProvider = ({ children }) => {
+export const StateProvider = ({ children }: any) => {
   const contextValue = useReducer(reducer, initialState)
 
   return (

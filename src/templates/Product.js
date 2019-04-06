@@ -13,9 +13,6 @@ import { Mutation } from 'react-apollo'
 import Select from 'react-select'
 // import Slider from 'react-slick'
 import Layout from 'components/Layout'
-// Styles
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 // const StyledSlider = styled(Slider)`
 //   margin-bottom: ${rhythm(1)};

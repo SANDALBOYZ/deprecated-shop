@@ -7,7 +7,7 @@ import { StateContext } from 'components/StateProvider'
 import { Link } from 'gatsby'
 import SearchBar from './SearchBar'
 // CSS
-import { fadeInLeftRight } from 'styles/animations.css'
+import { fadeInLeftRight } from 'styles/animations.css.js'
 import { HEADER_HEIGHT } from './Header'
 
 const MenuContainer = styled.div`

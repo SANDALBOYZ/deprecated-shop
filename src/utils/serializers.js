@@ -8,7 +8,7 @@ type LineItem = {
   variantId: string
 }
 
-export const serializeBagToLineItems = ({ items }: BagState): [LineItem] => (
+export const serializeBagToLineItems = ({ items }: BagState): Array<LineItem> => (
   Object.keys(items).map((itemId: string) => ({
     quantity: items[itemId].quantity,
     variantId: itemId.replace(GATSBY_SHOPIFY_PRODUCT_VARIANT_PREFIX, '')

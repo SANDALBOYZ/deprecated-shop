@@ -16,7 +16,7 @@ export const Content = styled.div`
   margin-top: ${HEADER_HEIGHT};
 `
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children }: any) => {
   const [state] = useContext(StateContext)
 
   useEffect(() => {

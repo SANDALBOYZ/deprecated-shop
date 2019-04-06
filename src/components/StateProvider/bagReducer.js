@@ -8,12 +8,15 @@ type BagItem = {
   title: string,
   variantTitle: string
 }
+
+type BagItems = {
+  [itemId: string]: BagItem
+}
+
 export type BagState = {
   checkoutId?: string,
   updatedAt?: string,
-  items?: {
-    [itemId: string]: BagItem
-  },
+  items: BagItems,
   subtotalPrice?: string,
   totalTax?: string,
   totalPrice?: string,
@@ -34,10 +37,10 @@ const initialState: BagState = {
  *  Takes `checkoutLineItems` from GraphQL call and turns it into
  *  something our Bag component can understand.
  */
-export const deserializeLineItemsToBagItems = (lineItems: [any]): [BagItem] => {
-  return lineItems.reduce((bagState: BagState, { node }) => {
+export const deserializeLineItemsToBagItems = (lineItems: [any]): BagItems => {
+  return lineItems.reduce((bagItemsState: BagItems, { node }) => {
     return {
-      ...bagState,
+      ...bagItemsState,
       [`Shopify__ProductVariant__${node.variant.id}`]: {
         quantity: node.quantity,
         title: node.title,
