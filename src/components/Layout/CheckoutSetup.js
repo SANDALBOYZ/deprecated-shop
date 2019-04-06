@@ -1,8 +1,8 @@
 // This is a NON-PRESENTATIONAL component. It uses Apollo to set up necessary API stuff.
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Mutation } from 'react-apollo'
 import { CREATE_CHECKOUT } from 'api/queries'
-import { StateContext, BAG_SET_CHECKOUT_ID } from 'components/StateProvider'
+import { StateContext, BAG_SET } from 'components/StateProvider'
 
 const { localStorage } = window
 
@@ -15,6 +15,16 @@ const { localStorage } = window
  *    Subsequent modifications to the cart will be made on the `checkoutId` in `localStorage`.
  */
 
+const CreateCheckout = ({ createCheckout }) => {
+  useEffect(() => {
+    if (!localStorage.getItem('sandalboyzCheckoutId')) {
+      createCheckout({ variables: { input: {} } })
+    }
+  })
+
+  return null
+}
+
 const CheckoutSetup = () => {
   const [, dispatch] = useContext(StateContext)
 
@@ -23,7 +33,7 @@ const CheckoutSetup = () => {
       mutation={CREATE_CHECKOUT}
       onCompleted={({ checkoutCreate: { checkout } }) => {
         localStorage.setItem('sandalboyzCheckoutId', checkout.id)
-        dispatch({ type: BAG_SET_CHECKOUT_ID, payload: { checkout } })
+        dispatch({ type: BAG_SET, payload: { checkout } })
       }}
 
       // `update` is for updating Apollo cache (not implemented yet).
@@ -34,13 +44,7 @@ const CheckoutSetup = () => {
       {
         // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one.
         // The result is stored using `onCompleted` (above).
-        (createCheckout) => {
-          if (!localStorage.getItem('sandalboyzCheckoutId')) {
-            createCheckout({ variables: { input: {} } })
-          }
-
-          return null
-        }
+        (createCheckout) => <CreateCheckout createCheckout={createCheckout} />
       }
     </Mutation>
   )

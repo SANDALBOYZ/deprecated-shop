@@ -7,7 +7,7 @@ describe('reducer', () => {
       bagIsOpen: false,
       menuIsOpen: false,
       bag: {
-        items: []
+        items: {}
       }
     }
 

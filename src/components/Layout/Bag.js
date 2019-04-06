@@ -1,13 +1,19 @@
 // @flow
 import React, { useContext } from 'react'
 import styled from '@emotion/styled'
-import { StateContext, BAG_SET, CLOSE_BAG } from 'components/StateProvider'
+import {
+  StateContext,
+  bagReducer,
+  BAG_SET,
+  BAG_REMOVE,
+  CLOSE_BAG
+} from 'components/StateProvider'
 import { rhythm } from 'utils/typography'
-import get from 'lodash/get'
+import { serializeBagToLineItems } from 'utils/serializers'
 // API
-import { GET_CHECKOUT_NODE } from 'api/queries'
+import { GET_CHECKOUT_NODE, CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 // Components
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 // CSS
 import { HEADER_HEIGHT } from './Header'
 
@@ -74,6 +80,8 @@ const Bag = () => {
   const { bagIsOpen, bag } = state
   const { items } = bag
 
+  const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
+
   if (!window.localStorage.sandalboyzCheckoutId) return null
 
   return (
@@ -87,47 +95,57 @@ const Bag = () => {
       }}
     >
       {
-        ({ loading, error, data }) => {
-          const node = get(data, 'node')
+        ({ loading, error, data }) => (
+          <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
+            {
+              (checkoutLineItemsReplace, { loading, error, data }) => (
+                <BagContainer isOpen={bagIsOpen}>
+                  <BagContent>
+                    <BagHeader>Bag</BagHeader>
+                    {
+                      Object.keys(items).map((itemId) => (
+                        <div key={itemId}>
+                          <p>{items[itemId].title}</p>
+                          <p>Size {items[itemId].variantTitle}</p>
+                          <p>{items[itemId].quantity}</p>
+                          <p
+                            onClick={() => {
+                              const lineItems = serializeBagToLineItems(bagReducer(bag, {
+                                type: BAG_REMOVE,
+                                payload: { id: itemId }
+                              }))
 
-          if (!node) return null
-
-          const totalPrice: string = node ? `${node.totalPrice} ${node.currencyCode}` : ''
-
-          return (
-            <BagContainer isOpen={bagIsOpen}>
-              <BagContent>
-                <BagHeader>Bag</BagHeader>
-                {
-                  Object.keys(items).map((key) => (
-                    <div key={key}>
-                      <p>{items[key].title}</p>
-                      <p>Size {items[key].variantTitle}</p>
-                      <p>{items[key].quantity}</p>
-                    </div>
-                  ))
-                }
-              </BagContent>
-              <ButtonContainer>
-                <CancelButton
-                  onClick={() => dispatch({ type: CLOSE_BAG })}
-                >
-                  <ButtonText>
-                    Cancel
-                  </ButtonText>
-                </CancelButton>
-                <CheckoutButton onClick={() => {
-                  if (node.webUrl) window.location.href = node.webUrl
-                }}>
-                  <ButtonText>
-                    Checkout
-                  </ButtonText>
-                  <span>{totalPrice}</span>
-                </CheckoutButton>
-              </ButtonContainer>
-            </BagContainer>
-          )
-        }
+                              console.log(lineItems)
+                            }}
+                          >
+                            Remove
+                          </p>
+                        </div>
+                      ))
+                    }
+                  </BagContent>
+                  <ButtonContainer>
+                    <CancelButton
+                      onClick={() => dispatch({ type: CLOSE_BAG })}
+                    >
+                      <ButtonText>
+                        Cancel
+                      </ButtonText>
+                    </CancelButton>
+                    <CheckoutButton onClick={() => {
+                      if (bag.webUrl) window.location.href = bag.webUrl
+                    }}>
+                      <ButtonText>
+                        Checkout
+                      </ButtonText>
+                      <span>{totalPrice}</span>
+                    </CheckoutButton>
+                  </ButtonContainer>
+                </BagContainer>
+              )
+            }
+          </Mutation>
+        )
       }
     </Query>
   )

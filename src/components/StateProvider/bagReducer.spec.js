@@ -10,7 +10,7 @@ import {
 describe('bagReducer', () => {
   it('initializes with state', () => {
     const initialState = {
-      items: []
+      items: {}
     }
 
     expect(bagReducer(undefined)).toEqual(initialState)
@@ -84,16 +84,11 @@ describe('bagReducer', () => {
 
   it('decrements existing item in bag', () => {
     const initialState = {
-      selectedOptionValue: {
-        quantity: 2,
-        metadata: {
-          id: 'someId',
+      items: {
+        selectedOptionValue: {
+          quantity: 2,
           title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+          variantId: 'someId'
         }
       }
     }
@@ -104,16 +99,11 @@ describe('bagReducer', () => {
     }
 
     const result = {
-      selectedOptionValue: {
-        quantity: 1,
-        metadata: {
-          id: 'someId',
+      items: {
+        selectedOptionValue: {
+          quantity: 1,
           title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+          variantId: 'someId'
         }
       }
     }
@@ -123,16 +113,11 @@ describe('bagReducer', () => {
 
   it('removes an item if decremented to 0', () => {
     const initialState = {
-      selectedOptionValue: {
-        quantity: 1,
-        metadata: {
-          id: 'someId',
+      items: {
+        selectedOptionValue: {
+          quantity: 1,
           title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
-          }
+          variantId: 'someId'
         }
       }
     }
@@ -142,22 +127,26 @@ describe('bagReducer', () => {
       payload: { id: 'selectedOptionValue' }
     }
 
-    const result = {}
+    const result = {
+      items: {}
+    }
 
     expect(bagReducer(initialState, action)).toEqual(result)
   })
 
   it('removes an item', () => {
     const initialState = {
-      selectedOptionValue: {
-        quantity: 3,
-        metadata: {
-          id: 'someId',
-          title: 'My Product Title',
-          selectedOption: {
-            value: 'selectedOptionValue',
-            label: 'label',
-            isDisabled: false
+      items: {
+        selectedOptionValue: {
+          quantity: 3,
+          metadata: {
+            id: 'someId',
+            title: 'My Product Title',
+            selectedOption: {
+              value: 'selectedOptionValue',
+              label: 'label',
+              isDisabled: false
+            }
           }
         }
       }
@@ -168,13 +157,33 @@ describe('bagReducer', () => {
       payload: { id: 'selectedOptionValue' }
     }
 
-    const result = {}
+    const result = {
+      items: {}
+    }
 
     expect(bagReducer(initialState, action)).toEqual(result)
   })
 })
 
 describe('deserializeLineItemsToBagItems', () => {
+  it('safely deserializes empty arrays', () => {
+    const data = {
+      'checkoutLineItemsReplace': {
+        'checkout': {
+          'id': 'Z2lkOi8vc2hvcGlmeS9DaGVja291dC8yNmU4ZGIzYzE5NDU3MGYwNjQxMDJhNDlhZDQ0MGY3Yj9rZXk9YzI4ZTg0MGJkMTgyYTIyYzZkMTkyMjAwYmYxN2UzNjI=',
+          'lineItems': {
+            'edges': []
+          }
+        },
+        'userErrors': []
+      }
+    }
+
+    const lineItems = data.checkoutLineItemsReplace.checkout.lineItems.edges
+
+    expect(deserializeLineItemsToBagItems(lineItems)).toEqual({})
+  })
+
   it('deserializes graphql data into `BagState`', () => {
     const data = {
       'checkoutLineItemsReplace': {

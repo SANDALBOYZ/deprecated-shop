@@ -5,8 +5,7 @@ import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
 import { StateContext, bagReducer, BAG_ADD } from 'components/StateProvider'
 import withProvider from 'withProvider'
-// Types
-import type BagState from 'components/StateProvider'
+import { serializeBagToLineItems } from 'utils/serializers'
 // API
 import { CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 // Components
@@ -133,27 +132,13 @@ const SizeChart = styled.span`
 
 const { localStorage } = window
 
-type LineItem = {
-  quantity: number,
-  variantId: string
-}
-
-const serializeBagToLineItems = ({ items }: BagState): [LineItem] => (
-  Object.keys(items).map((itemId: string) => ({
-    quantity: items[itemId].quantity,
-    variantId: itemId.replace('Shopify__ProductVariant__', '')
-  }))
-)
-
 const Product = ({ pageContext: product }) => {
   const [state] = useContext(StateContext)
   console.log('PRODUCT state', state)
   const [selectedOption, setSelectedOption] = useState()
 
   return (
-    <Mutation
-      mutation={CHECKOUT_LINE_ITEMS_REPLACE}
-    >
+    <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
       {(checkoutLineItemsReplace, { loading, error, data }) => {
         return (
           <Layout>

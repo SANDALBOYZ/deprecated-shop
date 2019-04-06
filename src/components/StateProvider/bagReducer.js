@@ -4,24 +4,29 @@ import get from 'lodash/get'
 
 type BagItem = {
   quantity: number,
-  metadata: any
+  title: string,
+  variantTitle: string
 }
 export type BagState = {
   checkoutId: string,
   updatedAt: string,
   items: {
     [itemId: string]: BagItem
-  }
+  },
+  subtotalPrice: string,
+  totalTax: string,
+  totalPrice: string,
+  currencyCode: string,
+  checkoutWebUrl: string
 }
 
 export const BAG_ADD = '@bag/ADD'
 export const BAG_SUBTRACT = '@bag/SUBTRACT'
 export const BAG_REMOVE = '@bag/REMOVE'
 export const BAG_SET = '@bag/SET'
-export const BAG_SET_CHECKOUT_ID = '@bag/SET_CHECKOUT_ID'
 
 const initialState: BagState = {
-  items: []
+  items: {}
 }
 
 /**
@@ -71,16 +76,23 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
     }
     case BAG_SUBTRACT: {
       const id = action.payload.id
+      const { items } = state
 
-      if (state[id].quantity === 1) {
-        const { [id]: _, ...without } = state
-        return without
+      if (items[id].quantity === 1) {
+        const { [id]: _, ...without } = items
+        return {
+          ...state,
+          items: without
+        }
       } else {
         return {
           ...state,
-          [id]: {
-            ...state[id],
-            quantity: state[id].quantity - 1
+          items: {
+            ...items,
+            [id]: {
+              ...items[id],
+              quantity: items[id].quantity - 1
+            }
           }
         }
       }
@@ -88,8 +100,11 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
     case BAG_REMOVE: {
       const id = action.payload.id
 
-      const { [id]: _, ...without } = state
-      return without
+      const { [id]: _, ...without } = state.items
+      return {
+        ...state,
+        items: without
+      }
     }
     case BAG_SET: {
       const { payload: { checkout } } = action
@@ -98,16 +113,12 @@ export const bagReducer = (state: BagState = initialState, action): BagState => 
         ...state,
         checkoutId: checkout.id,
         updatedAt: checkout.updatedAt,
+        subtotalPrice: checkout.subtotalPrice,
+        totalTax: checkout.totalTax,
+        totalPrice: checkout.totalPrice,
+        currencyCode: checkout.currencyCode,
+        checkoutWebUrl: checkout.webUrl,
         items: deserializeLineItemsToBagItems(checkout.lineItems.edges)
-      }
-    }
-    case BAG_SET_CHECKOUT_ID: {
-      const { payload: { checkout } } = action
-
-      return {
-        ...state,
-        checkoutId: checkout.id,
-        updatedAt: checkout.updatedAt
       }
     }
     default:
