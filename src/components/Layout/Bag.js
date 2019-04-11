@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import {
   StateContext,
@@ -16,6 +16,9 @@ import { GET_CHECKOUT_NODE, CHECKOUT_LINE_ITEMS_REPLACE } from 'api/queries'
 import { Query, Mutation } from 'react-apollo'
 // CSS
 import { HEADER_HEIGHT } from './Header'
+
+// HACK: `window` is not available during production build. How can we solve this?
+if (typeof window === 'undefined') var window // eslint-disable-line no-use-before-define
 
 export const BagContainer = styled.div`
   display: ${({ isOpen }) => isOpen ? 'grid' : 'none'};
@@ -93,14 +96,24 @@ const Bag = () => {
   const { bagIsOpen, bag } = state
   const { items } = bag
 
+  const [checkoutId, setCheckoutId] = useState()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
+        setCheckoutId(window.localStorage.sandalboyzCheckoutId)
+      }
+    }
+  })
+
   const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
 
-  if (!window.localStorage.sandalboyzCheckoutId) return null
+  if (!checkoutId) return null
 
   return (
     <Query
       query={GET_CHECKOUT_NODE}
-      variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
+      variables={{ id: checkoutId }}
       onCompleted={(data) => {
         if (bag.updatedAt !== data.node.updatedAt) {
           dispatch({ type: BAG_SET, payload: { checkout: data.node } })
@@ -140,7 +153,7 @@ const Bag = () => {
 
                               checkoutLineItemsReplace({
                                 variables: {
-                                  checkoutId: window.localStorage.sandalboyzCheckoutId,
+                                  checkoutId,
                                   lineItems
                                 }
                               })
