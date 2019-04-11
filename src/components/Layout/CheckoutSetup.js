@@ -1,5 +1,5 @@
 // This is a NON-PRESENTATIONAL component. It uses Apollo to set up necessary API stuff.
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Mutation } from 'react-apollo'
 import { CREATE_CHECKOUT } from 'api/queries'
 import { StateContext, BAG_SET } from 'components/StateProvider'
@@ -14,10 +14,16 @@ import { StateContext, BAG_SET } from 'components/StateProvider'
  */
 
 const CreateCheckout = ({ createCheckout }) => {
-  const { localStorage } = window
+  const [checkoutId, setCheckoutId] = useState()
 
   useEffect(() => {
-    if (!localStorage.getItem('sandalboyzCheckoutId')) {
+    if (typeof window !== 'undefined') {
+      if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
+        setCheckoutId(window.localStorage.sandalboyzCheckoutId)
+      }
+    }
+
+    if (!checkoutId) {
       createCheckout({ variables: { input: {} } })
     }
   })
@@ -32,10 +38,9 @@ const CheckoutSetup = () => {
     <Mutation
       mutation={CREATE_CHECKOUT}
       onCompleted={({ checkoutCreate: { checkout } }) => {
-        localStorage.setItem('sandalboyzCheckoutId', checkout.id)
+        window.localStorage.setItem('sandalboyzCheckoutId', checkout.id)
         dispatch({ type: BAG_SET, payload: { checkout } })
       }}
-
       // `update` is for updating Apollo cache (not implemented yet).
       // update={(cache, { data: { checkoutCreate } }) => {
       //   console.log('`update` function from `Mutation`', checkoutCreate)
