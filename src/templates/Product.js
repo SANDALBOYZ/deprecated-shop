@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 // import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { rhythm } from 'utils/typography'
@@ -128,10 +128,18 @@ const SizeChart = styled.span`
 // `
 
 const Product = ({ pageContext: product }) => {
-  const { localStorage } = window
   const [state] = useContext(StateContext)
   console.log('PRODUCT state', state)
   const [selectedOption, setSelectedOption] = useState()
+  const [checkoutId, setCheckoutId] = useState()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
+        setCheckoutId(window.localStorage.sandalboyzCheckoutId)
+      }
+    }
+  })
 
   return (
     <Mutation mutation={CHECKOUT_LINE_ITEMS_REPLACE}>
@@ -168,7 +176,7 @@ const Product = ({ pageContext: product }) => {
 
                   checkoutLineItemsReplace({
                     variables: {
-                      checkoutId: localStorage.sandalboyzCheckoutId,
+                      checkoutId,
                       lineItems
                     }
                   })
