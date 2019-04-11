@@ -26,6 +26,7 @@
     "gatsby-plugin-typography": "^2.2.2",
     "gatsby-source-shopify": "^2.0.2",
     "graphql-tag": "^2.10.0",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
     "react": "^16.8.0",
     "react-apollo": "^2.3.3",
