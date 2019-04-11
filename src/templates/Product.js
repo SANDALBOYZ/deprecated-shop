@@ -127,9 +127,8 @@ const SizeChart = styled.span`
 //   }
 // `
 
-const { localStorage } = window
-
 const Product = ({ pageContext: product }) => {
+  const { localStorage } = window
   const [state] = useContext(StateContext)
   console.log('PRODUCT state', state)
   const [selectedOption, setSelectedOption] = useState()

@@ -4,8 +4,6 @@ import { Mutation } from 'react-apollo'
 import { CREATE_CHECKOUT } from 'api/queries'
 import { StateContext, BAG_SET } from 'components/StateProvider'
 
-const { localStorage } = window
-
 /**
  * This will create a checkout remotely and save the ID of it in `localStorage`.
  * We then make a GraphQL query for that saved ID so that Apollo can cache it.
@@ -16,6 +14,8 @@ const { localStorage } = window
  */
 
 const CreateCheckout = ({ createCheckout }) => {
+  const { localStorage } = window
+
   useEffect(() => {
     if (!localStorage.getItem('sandalboyzCheckoutId')) {
       createCheckout({ variables: { input: {} } })
