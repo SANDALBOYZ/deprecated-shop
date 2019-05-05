@@ -14,15 +14,6 @@ import { StateContext, BAG_SET } from 'components/StateProvider'
  */
 
 const CreateCheckout = ({ createCheckout }) => {
-  console.log('================================')
-  console.log('================================')
-  console.log('Inside `CheckoutSetup.js`')
-  console.log(process.env.NODE_ENV)
-  console.log(process.env.SHOPIFY_GRAPHQL_URI)
-  console.log(process.env.SHOPIFY_ACCESS_TOKEN)
-  console.log(process.env.GATSBY_SHOPIFY_GRAPHQL_URI)
-  console.log(process.env.GATSBY_SHOPIFY_ACCESS_TOKEN)
-
   useEffect(() => {
     if (!window.localStorage.sandalboyzCheckoutId) {
       createCheckout({ variables: { input: {} } })
