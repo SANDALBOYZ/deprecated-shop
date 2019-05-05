@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import {
   StateContext,
@@ -93,14 +93,20 @@ const Bag = () => {
   const { bagIsOpen, bag } = state
   const { items } = bag
 
-  const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
+  const [checkoutId, setCheckoutId] = useState()
 
-  if (!window.localStorage.sandalboyzCheckoutId) return null
+  useEffect(() => {
+    if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
+      setCheckoutId(window.localStorage.sandalboyzCheckoutId)
+    }
+  })
+
+  const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
 
   return (
     <Query
       query={GET_CHECKOUT_NODE}
-      variables={{ id: window.localStorage.getItem('sandalboyzCheckoutId') }}
+      variables={{ id: checkoutId }}
       onCompleted={(data) => {
         if (bag.updatedAt !== data.node.updatedAt) {
           dispatch({ type: BAG_SET, payload: { checkout: data.node } })
@@ -140,7 +146,7 @@ const Bag = () => {
 
                               checkoutLineItemsReplace({
                                 variables: {
-                                  checkoutId: window.localStorage.sandalboyzCheckoutId,
+                                  checkoutId,
                                   lineItems
                                 }
                               })
