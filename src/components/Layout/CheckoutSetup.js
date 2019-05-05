@@ -45,7 +45,14 @@ const CheckoutSetup = () => {
       {
         // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one.
         // The result is stored using `onCompleted` (above).
-        (createCheckout) => <CreateCheckout createCheckout={createCheckout} />
+        (createCheckout, stuff) => {
+          const createCheckoutRef = createCheckout
+          const stuffRef = stuff
+
+          console.log(stuffRef)
+
+          return null
+        }
       }
     </Mutation>
   )
