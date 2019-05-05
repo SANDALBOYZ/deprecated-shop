@@ -1,5 +1,5 @@
 // This is a NON-PRESENTATIONAL component. It uses Apollo to set up necessary API stuff.
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Mutation } from 'react-apollo'
 import { CREATE_CHECKOUT } from 'api/queries'
 import { StateContext, BAG_SET } from 'components/StateProvider'
@@ -14,10 +14,6 @@ import { StateContext, BAG_SET } from 'components/StateProvider'
  */
 
 const CreateCheckout = ({ createCheckout }) => {
-  const createCheckoutRef = createCheckout
-
-  console.log(createCheckoutRef)
-
   useEffect(() => {
     if (!window.localStorage.sandalboyzCheckoutId) {
       createCheckout({ variables: { input: {} } })
@@ -45,14 +41,7 @@ const CheckoutSetup = () => {
       {
         // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one.
         // The result is stored using `onCompleted` (above).
-        (createCheckout, stuff) => {
-          const createCheckoutRef = createCheckout
-          const stuffRef = stuff
-
-          console.log(stuffRef)
-
-          return null
-        }
+        (createCheckout) => <CreateCheckout createCheckout={createCheckout} />
       }
     </Mutation>
   )
