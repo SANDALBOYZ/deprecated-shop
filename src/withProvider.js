@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
-import { ApolloProvider } from 'react-apollo'
-import client from 'api/client'
+// import { ApolloProvider } from 'react-apollo'
+// import client from 'api/client'
 import { StateProvider } from 'components/StateProvider'
 
 /**
