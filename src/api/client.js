@@ -2,6 +2,10 @@
 import ApolloClient from 'apollo-boost'
 import fetch from 'isomorphic-fetch'
 
+console.log('Inside `api/client.js`')
+console.log(process.env.SHOPIFY_GRAPHQL_URI)
+console.log(process.env.SHOPIFY_ACCESS_TOKEN)
+
 const client = new ApolloClient({
   uri: process.env.SHOPIFY_GRAPHQL_URI,
   headers: {
