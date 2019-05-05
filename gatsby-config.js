@@ -2,10 +2,6 @@ require('dotenv').config({
   path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
 })
 
-console.log('================================')
-console.log('================================')
-console.log('Inside `gatsby-config.js`')
-console.log(process.env)
 console.log('NODE_ENV:', process.env.NODE_ENV)
 console.log('SHOPIFY_GRAPHQL_URI:', process.env.SHOPIFY_GRAPHQL_URI)
 console.log('SHOPIFY_ACCESS_TOKEN:', process.env.SHOPIFY_ACCESS_TOKEN)
