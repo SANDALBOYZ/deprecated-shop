@@ -17,6 +17,8 @@ const CreateCheckout = ({ createCheckout }) => {
   console.log('\n\nInside `CheckoutSetup.js`')
   console.log(process.env.SHOPIFY_GRAPHQL_URI)
   console.log(process.env.SHOPIFY_ACCESS_TOKEN)
+  console.log(process.env.GATSBY_SHOPIFY_GRAPHQL_URI)
+  console.log(process.env.GATSBY_SHOPIFY_ACCESS_TOKEN)
 
   useEffect(() => {
     if (!window.localStorage.sandalboyzCheckoutId) {
