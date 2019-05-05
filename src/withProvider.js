@@ -13,9 +13,7 @@ export const withProvider = (component: React.AbstractComponent<{}>): React.Abst
 
   return (props: any) => (
     <StateProvider>
-      <ApolloProvider client={client}>
-        <Component {...props} />
-      </ApolloProvider>
+      <Component {...props} />
     </StateProvider>
   )
 }
