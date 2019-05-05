@@ -17,15 +17,19 @@ const CreateCheckout = ({ createCheckout }) => {
   const [checkoutId, setCheckoutId] = useState()
 
   useEffect(() => {
+    const windowVar = window
+
+    console.log(windowVar)
+
     if (typeof window !== 'undefined') {
       if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
         setCheckoutId(window.localStorage.sandalboyzCheckoutId)
       }
     }
 
-    if (!checkoutId) {
-      createCheckout({ variables: { input: {} } })
-    }
+    // if (!checkoutId) {
+    //   createCheckout({ variables: { input: {} } })
+    // }
   })
 
   return null
