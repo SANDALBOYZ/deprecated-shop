@@ -13,12 +13,10 @@ import { StateContext, BAG_SET } from 'components/StateProvider'
  *    Subsequent modifications to the cart will be made on the `checkoutId` in `localStorage`.
  */
 
-const CreateCheckout = ({ createCheckout, stuff }) => {
+const CreateCheckout = ({ createCheckout }) => {
   const createCheckoutRef = createCheckout
-  const stuffRef = stuff
 
   console.log(createCheckoutRef)
-  console.log(stuffRef)
 
   useEffect(() => {
     if (!window.localStorage.sandalboyzCheckoutId) {
@@ -47,7 +45,7 @@ const CheckoutSetup = () => {
       {
         // If there is no `sandalboyzCheckoutId` stored, then we make a call to create one.
         // The result is stored using `onCompleted` (above).
-        (createCheckout, stuff) => <CreateCheckout createCheckout={createCheckout} stuff={stuff} />
+        (createCheckout) => <CreateCheckout createCheckout={createCheckout} />
       }
     </Mutation>
   )
