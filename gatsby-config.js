@@ -2,6 +2,16 @@ require('dotenv').config({
   path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
 })
 
+console.log('================================')
+console.log('================================')
+console.log('Inside `gatsby-config.js`')
+console.log(process.env)
+console.log(process.env.NODE_ENV)
+console.log(process.env.SHOPIFY_GRAPHQL_URI)
+console.log(process.env.SHOPIFY_ACCESS_TOKEN)
+console.log(process.env.GATSBY_SHOPIFY_GRAPHQL_URI)
+console.log(process.env.GATSBY_SHOPIFY_ACCESS_TOKEN)
+
 module.exports = {
   siteMetadata: {
     title: 'SANDALBOYZ',
