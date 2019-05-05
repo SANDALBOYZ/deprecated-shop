@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8b824817-1d87-4edb-bc48-7d7b54673ab3/deploy-status)](https://app.netlify.com/sites/amazing-fermat-189903/deploys)
+
 # Shop
 
 Shop is the SANDALBOYZ online storefront.
