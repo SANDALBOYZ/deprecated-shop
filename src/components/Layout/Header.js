@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { rhythm } from 'utils/typography'
-import { StateContext, TOGGLE_BAG, TOGGLE_MENU } from 'components/StateProvider'
+import { StateContext, TOGGLE_MENU } from 'components/StateProvider'
 // Components
 import { Link } from 'gatsby'
 import BagButton from './BagButton'
@@ -53,7 +53,7 @@ const NavItem = styled.div`
 const Header = () => {
   const [state, dispatch] = useContext(StateContext)
   console.log('HEADER state', state)
-  const { bagIsOpen, menuIsOpen } = state
+  const { menuIsOpen } = state
 
   return (
     <header css={headerStyles}>
@@ -62,10 +62,7 @@ const Header = () => {
       </StyledLink>
       <Nav>
         <NavItem>
-          <BagButton
-            isOpen={bagIsOpen}
-            onClick={() => dispatch({ type: TOGGLE_BAG })}
-          />
+          <BagButton />
         </NavItem>
         <NavItem>
           <MenuButton
