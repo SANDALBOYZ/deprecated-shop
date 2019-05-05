@@ -17,9 +17,6 @@ import { Query, Mutation } from 'react-apollo'
 // CSS
 import { HEADER_HEIGHT } from './Header'
 
-// HACK: `window` is not available during production build. How can we solve this?
-if (typeof window === 'undefined') var window // eslint-disable-line no-use-before-define
-
 export const BagContainer = styled.div`
   display: ${({ isOpen }) => isOpen ? 'grid' : 'none'};
   grid-template-rows: auto 120px;
@@ -99,16 +96,12 @@ const Bag = () => {
   const [checkoutId, setCheckoutId] = useState()
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
-        setCheckoutId(window.localStorage.sandalboyzCheckoutId)
-      }
+    if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
+      setCheckoutId(window.localStorage.sandalboyzCheckoutId)
     }
   })
 
   const totalPrice: string = `${bag.totalPrice} ${bag.currencyCode}`
-
-  if (!checkoutId) return null
 
   return (
     <Query

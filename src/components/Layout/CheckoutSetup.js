@@ -14,14 +14,8 @@ import { StateContext, BAG_SET } from 'components/StateProvider'
  */
 
 const CreateCheckout = ({ createCheckout }) => {
-  const [checkoutId, setCheckoutId] = useState()
-
   useEffect(() => {
-    if (checkoutId !== window.localStorage.sandalboyzCheckoutId) {
-      setCheckoutId(window.localStorage.sandalboyzCheckoutId)
-    }
-
-    if (!checkoutId) {
+    if (!window.localStorage.sandalboyzCheckoutId) {
       createCheckout({ variables: { input: {} } })
     }
   })
