@@ -28,6 +28,7 @@ const Products = ({ data: { allShopifyProduct: { edges } } }) => {
 
 export default withProvider(Products)
 
+// TODO: Products should come live from the Shopify API! This will allow for filtering/sorting/searching/etc.
 export const query = graphql`
   query {
     allShopifyProduct {

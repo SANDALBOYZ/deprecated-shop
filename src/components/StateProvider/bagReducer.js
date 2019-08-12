@@ -9,7 +9,7 @@ type BagItem = {
   variantTitle: string
 }
 
-type BagItems = {
+export type BagItems = {
   [itemId: string]: BagItem
 }
 

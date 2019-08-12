@@ -56,13 +56,13 @@ const Footer = () => (
     <Nav>
       <NavList>
         <NavListItem>
-          <NavListLink>INSTAGRAM</NavListLink>
+          <NavListLink href='https://www.instagram.com/sandalboyz'>INSTAGRAM</NavListLink>
         </NavListItem>
         <NavListItem>
-          <NavListLink>FACEBOOK</NavListLink>
+          <NavListLink href='https://www.facebook.com/sandalboyz'>FACEBOOK</NavListLink>
         </NavListItem>
         <NavListItem>
-          <NavListLink>TWITTER</NavListLink>
+          <NavListLink href='https://www.twitter.com/sandalboyz'>TWITTER</NavListLink>
         </NavListItem>
       </NavList>
       <NavList>

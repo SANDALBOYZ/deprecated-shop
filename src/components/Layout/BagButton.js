@@ -1,7 +1,10 @@
 // @flow
-import React from 'react'
+import React, { useContext } from 'react'
 import { css, keyframes } from '@emotion/core'
 import styled from '@emotion/styled'
+import { StateContext, TOGGLE_BAG } from 'components/StateProvider'
+
+import type BagItems from 'components/StateProvider'
 
 export const bagPop = keyframes`
   0% {
@@ -43,25 +46,23 @@ export const BagButtonContainer = styled('button')`
   }
 `
 
-// const calculateQuantity = (edges: Array<Object>): number => (
-//   edges.reduce((total, edge) => {
-//     total += edge.node.quantity
-//     return total
-//   }, 0)
-// )
-
-type BagButtonProps = {
-  isOpen: boolean,
-  onClick: Function
-}
-
-const BagButton = ({ isOpen, onClick }: BagButtonProps) => (
-  <BagButtonContainer
-    onClick={onClick}
-    // className={context.addedToCart ? addedToCartStyle : undefined}
-    // onAnimationEnd={context.untoggleAddedToCart}
-    data-count={69}
-  />
+export const calculateBagQuantity = (bagItems: BagItems): number => (
+  Object.keys(bagItems).reduce(
+    (total, bagItemKey) => total + bagItems[bagItemKey].quantity, 0
+  )
 )
+
+const BagButton = () => {
+  const [state, dispatch] = useContext(StateContext)
+
+  return (
+    <BagButtonContainer
+      onClick={() => dispatch({ type: TOGGLE_BAG })}
+      // className={context.addedToCart ? addedToCartStyle : undefined}
+      // onAnimationEnd={context.untoggleAddedToCart}
+      data-count={calculateBagQuantity(state.bag.items)}
+    />
+  )
+}
 
 export default BagButton
