@@ -4,6 +4,9 @@
 
 Shop is the SANDALBOYZ online storefront.
 
+[sandalboyz.com](https://www.sandalboyz.com)
+[sandalboyz.engineering](https://www.sandalboyz.engineering)
+
 ![SpongeBob](./spongebob.jpg)
 
 This is a MoDeRn WeB aPpLiCaTiOn, built with [Gatsby](https://www.gatsbyjs.org/).
@@ -22,4 +25,4 @@ This is a MoDeRn WeB aPpLiCaTiOn, built with [Gatsby](https://www.gatsbyjs.org/)
 
 ## Documentation
 
-Hello.
+Don't be an asshole.
